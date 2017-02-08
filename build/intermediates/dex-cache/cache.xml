@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_fd11af42ed87c1effc38105e809657ecac53e22a.jar" />
+    </item>
+    <item
+        jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_4533eae1cbba90c069289e302a8e9708a30036c6.jar" />
+    </item>
+    <item
+        jar="D:\SDK\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_5129f8bde69b8e9f927fc544f89ecaf4d60c953a.jar" />
+    </item>
+    <item
+        jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_bebcb01120496fbb1de2aee03f4285b67abe88af.jar" />
+    </item>
+    <item
+        jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_94b2ef0c9d88b59a07a4f237aec5646f2d47aed5.jar" />
+    </item>
+    <item
+        jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="24.0.1"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_392422a7fbdd0dc747dcf553926ea3b42ab93fb0.jar" />
+    </item>
+
+</items>

@@ -11,7 +11,8 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <uses-feature android:name="android.hardware.sensor.stepcounter" />
+                <uses-feature android:name="android.hardware.sensor.stepdetector" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
