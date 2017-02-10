@@ -12,13 +12,11 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
-    private TextView step_detector;
-    private TextView step_counter;
+    private TextView acc_x;
+    private TextView acc_y;
+    private TextView acc_z;
     private TextView status;
 
-    private int stepCounter = 0;
-    private int counterSteps = 0;
-    private int stepDetector = 0;
 
     private SensorManager sensorManager;
     private Sensor sensor;
@@ -31,8 +29,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         context=getApplicationContext();
 
-        step_detector = (TextView)findViewById(R.id.step_detector);
-        step_counter = (TextView)findViewById(R.id.step_counter);
+        acc_x = (TextView)findViewById(R.id.acc_x);
+        acc_y = (TextView)findViewById(R.id.acc_y);
+        acc_z = (TextView)findViewById(R.id.acc_z);
         status = (TextView)findViewById(R.id.status);
 
         if (isRunning || !IsKitKatWithStepCounter(context.getPackageManager()))
@@ -47,25 +46,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent e) {
         status.setText("Step Detected!");
         switch (e.sensor.getType()) {
-            case Sensor.TYPE_STEP_DETECTOR:
-                stepDetector++;
-                step_detector.setText(stepDetector);
-                System.out.println("New Step detected.Total number of steps:"+stepCounter);
+            case Sensor.TYPE_ACCELEROMETER:
+                float[] acceleration = e.values;
+                acc_x.setText("X:"+String.valueOf(acceleration[0]));
+                acc_y.setText("Y:"+String.valueOf(acceleration[1]));
+                acc_z.setText("Z:"+String.valueOf(acceleration[2]));
                 break;
-            case Sensor.TYPE_STEP_COUNTER:
-                //Since it will return the total number since we registered we need to subtract the initial amount
-                //for the current steps since we opened app
-                if (counterSteps < 1) {
-                    // initial value
-                    counterSteps = (int)e.values[0];
-                }
-
-                // Calculate steps taken based on first counter value received.
-                stepCounter = (int)e.values[0] - counterSteps;
-                System.out.println("Step counter is "+step_counter);
-                step_counter.setText(String.valueOf(stepCounter));
-                System.out.println("New Step detected.Total number of steps:"+stepCounter);
-                break;
+            default:
         }
     }
 

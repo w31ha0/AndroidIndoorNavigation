@@ -12,14 +12,14 @@
         jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="72aba7c4a8bdeb6a2ff1f66142b475dcc0caa061">
+        sha1="5a198da749f03df61e1ff9338d7ef1a16a74d4f9">
         <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_fbee76dfc3c32691c7299af163abeee236bd3687\classes.dex" />
     </item>
     <item
         jar="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="ad8cd08cdbb59a5a453c2b83511d1fefba27845b">
+        sha1="3d9137cd4116b5b5998bcb355fd9affbb992183a">
         <dex dex="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_adec1d99df7d07d759dc0d66b0185adc849d58d0\classes.dex" />
     </item>
     <item
