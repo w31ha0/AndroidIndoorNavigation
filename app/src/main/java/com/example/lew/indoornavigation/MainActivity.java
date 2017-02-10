@@ -40,15 +40,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             return;
 
 
-        RegisterListeners (Sensor.TYPE_STEP_COUNTER);
+        RegisterListeners(Sensor.TYPE_STEP_COUNTER);
     }
 
     @Override
     public void onSensorChanged(SensorEvent e) {
+        status.setText("Step Detected!");
         switch (e.sensor.getType()) {
             case Sensor.TYPE_STEP_DETECTOR:
                 stepDetector++;
                 step_detector.setText(stepDetector);
+                System.out.println("New Step detected.Total number of steps:"+stepCounter);
                 break;
             case Sensor.TYPE_STEP_COUNTER:
                 //Since it will return the total number since we registered we need to subtract the initial amount
@@ -60,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                 // Calculate steps taken based on first counter value received.
                 stepCounter = (int)e.values[0] - counterSteps;
-                step_counter.setText(stepCounter);
+                System.out.println("Step counter is "+step_counter);
+                step_counter.setText(String.valueOf(stepCounter));
                 System.out.println("New Step detected.Total number of steps:"+stepCounter);
                 break;
         }
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        System.out.println("Acurracy changed "+accuracy);
     }
 
 
