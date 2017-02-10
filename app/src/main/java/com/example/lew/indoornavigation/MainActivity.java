@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     private SensorManager sensorManager;
-    private Sensor sensor;
+    private Sensor sensorAccel;
     private Context context;
 
     private boolean isRunning = false;
@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void RegisterListeners(int sensorType) {
         isRunning = true;
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(sensorType);
-        sensorManager.registerListener(this, sensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorAccel = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
+        boolean accelSupported = sensorManager.registerListener(this, sensorAccel,
+                SensorManager.SENSOR_DELAY_FASTEST);
         System.out.println("Sensor Manager Resgistered");
         status.setText("Sensors registered");
     }
