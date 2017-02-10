@@ -1,0 +1,11 @@
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$string$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$styleable$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$mipmap$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\android\support\v7\appcompat\R$id$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$style$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\android\tools\fd\runtime\AppPatchesLoaderImpl.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$layout$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$integer$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\R$id$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\MainActivity$override.class

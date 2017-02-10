@@ -13,11 +13,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
     private TextView step_detector;
-    private TextView step_counter;
     private TextView status;
 
     private int stepCounter = 0;
-    private int counterSteps = 0;
     private int stepDetector = 0;
 
     private SensorManager sensorManager;
@@ -32,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         context=getApplicationContext();
 
         step_detector = (TextView)findViewById(R.id.step_detector);
-        step_counter = (TextView)findViewById(R.id.step_counter);
         status = (TextView)findViewById(R.id.status);
 
         if (isRunning || !IsKitKatWithStepCounter(context.getPackageManager()))
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             return;
 
 
-        RegisterListeners(Sensor.TYPE_STEP_COUNTER);
+        RegisterListeners(Sensor.TYPE_STEP_DETECTOR);
     }
 
     @Override
@@ -51,21 +48,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 stepDetector++;
                 step_detector.setText(stepDetector);
                 System.out.println("New Step detected.Total number of steps:"+stepCounter);
+                step_detector.setText(String.valueOf(step_detector));
                 break;
-            case Sensor.TYPE_STEP_COUNTER:
-                //Since it will return the total number since we registered we need to subtract the initial amount
-                //for the current steps since we opened app
-                if (counterSteps < 1) {
-                    // initial value
-                    counterSteps = (int)e.values[0];
-                }
-
-                // Calculate steps taken based on first counter value received.
-                stepCounter = (int)e.values[0] - counterSteps;
-                System.out.println("Step counter is "+step_counter);
-                step_counter.setText(String.valueOf(stepCounter));
-                System.out.println("New Step detected.Total number of steps:"+stepCounter);
-                break;
+            default:
         }
     }
 
