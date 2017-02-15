@@ -53,4 +53,14 @@
         android:layout_centerHorizontal="true"
         />
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record"
+        android:id="@+id/switch1"
+        android:layout_below="@+id/acc_z"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:checked="false" />
+
 </RelativeLayout>
