@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         try {
             BufferedWriter fos = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() +"/"+"File.txt"));
             for (int i=0;i<acc_x.size();i++){
-                fos.write(acc_x.get(i)+"\t"+acc_x.get(i)+"\t"+acc_x.get(i));
+                fos.write(acc_x.get(i)+"\t"+acc_y.get(i)+"\t"+acc_z.get(i));
                 fos.write("\r\n");
             }
             fos.close();

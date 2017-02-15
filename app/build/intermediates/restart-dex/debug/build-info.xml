@@ -4,50 +4,42 @@
     api-level="23"
     density="xxxhdpi"
     format="7"
-    timestamp="2368641484758052"
-    token="-5317615870909893738"
-    verifier="COMPATIBLE" >
+    timestamp="2369163863056075"
+    token="-5317615870909893738" >
 
     <task
         name="javac"
-        duration="275" />
+        duration="0" />
     <task
         name="instant-run-dex"
-        duration="823" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="41" />
+        duration="0" />
     <task
         name="verifier"
-        duration="7" />
+        duration="0" />
 
     <artifact
-        location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\reload-dex\debug\classes.dex"
-        type="RELOAD_DEX" />
+        location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
+        type="DEX" />
 
     <build timestamp="2366464022483576" >
         <artifact
             location="C:\xampp\htdocs\IndoorNavigation\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
     </build>
-    <build timestamp="2368514958021626" >
+    <build
+        timestamp="2369140856816590"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\builds\debug\2369140856816590\classes.dex"
+            type="RELOAD_DEX" />
+    </build>
+    <build timestamp="2369163863056075" >
         <artifact
             location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
             type="DEX" />
-    </build>
-    <build
-        timestamp="2368577080540591"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\builds\debug\2368577080540591\classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="2368641484758052"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\reload-dex\debug\classes.dex"
-            type="RELOAD_DEX" />
     </build>
 
 </instant-run>
