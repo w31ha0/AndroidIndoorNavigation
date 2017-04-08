@@ -12,8 +12,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Status"
-        android:id="@+id/status"
+        android:text="0"
+        android:id="@+id/bearing"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -22,45 +22,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:id="@+id/steps"
-        android:layout_below="@+id/status"
+        android:id="@+id/pressure"
+        android:layout_below="@+id/bearing"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="77dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="X:"
-        android:id="@+id/acc_x"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Y:"
-        android:id="@+id/acc_y"
-        android:layout_below="@+id/acc_x"
+        android:text="0"
+        android:id="@+id/steps"
+        android:layout_below="@+id/pressure"
         android:layout_centerHorizontal="true"
-       />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Z:"
-        android:id="@+id/acc_z"
-        android:layout_below="@+id/acc_y"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_marginTop="77dp" />
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Record"
-        android:id="@+id/switch1"
-        android:layout_below="@+id/acc_z"
+        android:text="Save"
+        android:id="@+id/save"
+        android:layout_above="@+id/steps"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
-        android:checked="false" />
+        android:layout_marginBottom="47dp" />
+
 
 </RelativeLayout>
