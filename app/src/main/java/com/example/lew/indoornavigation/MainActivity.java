@@ -72,9 +72,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     //pressure_tv.setText("Pressure: " + String.valueOf(e.values[0]));
                 case Sensor.TYPE_ACCELEROMETER:
                     if (currTime - lastTimeAccelerometer > Constants.DATA_SAMPLING_PERIOD) {
-                        acceleration = e.values;
+                        float[] acceleration = e.values;
                         double acc_magnitude = Math.sqrt(acceleration[0] * acceleration[0] + acceleration[1] * acceleration[1] + acceleration[2] * acceleration[2]);;
-                        acc_magnitudes.add(acc_magnitude);
+                        if (acc_magnitude < 1000 && acc_magnitude > 1) {
+                            acc_magnitudes.add(acc_magnitude);
+                            this.acceleration = acceleration;
+                        }
                         lastTimeAccelerometer = e.timestamp;
                     }
                     if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {

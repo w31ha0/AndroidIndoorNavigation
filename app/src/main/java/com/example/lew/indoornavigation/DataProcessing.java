@@ -41,7 +41,7 @@ public class DataProcessing {
                     int gyroIndex = (int)(accIndex*(ratio));
                     if ( !checkForTurn(gyroIndex,gyros)) {
                         noOfPeaks++;
-                        System.out.println("Step detected at "+accIndex);
+                        //System.out.println("Step detected at "+accIndex);
                     }
                     windowSize = 0;
                 }
