@@ -20,12 +20,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager sensorManager;
 
-    private long lastGyroSampling = 0;
-    private long lastTimeSampling = 0;
-    private long lastTimeSteps = 0;
+    private long lastTimeGyro = 0;
+    private long lastTimeAccelerometer = 0;
+    private long lastTimeProcessing = 0;
+    private long lastTimeMagnetic = 0;
+
     private float prevBearing = -1f;
     private float bearing = 0f;
     private int baseNoOfSteps = 0;
+
+    private float[] acceleration;
+    private float[] magnetic;
+    private float[] gyro;
+    private boolean haveMagneticData = false;
+    private boolean stoppedPitching = true;
+    private double offsetPitchBegan = 0;
 
     private ArrayList<Double> acc_magnitudes;
     private ArrayList<Double> gyros;
@@ -41,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         acc_magnitudes = new ArrayList<>();
         gyros = new ArrayList<>();
+        gyro = new float[3];
+        magnetic = new float[3];
+        acceleration = new float[3];
 
         RegisterListeners();
     }
@@ -50,35 +62,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             long currTime = e.timestamp;
             switch (e.sensor.getType()) {
                 case Sensor.TYPE_GYROSCOPE:
-                    if (currTime - lastGyroSampling > Constants.DATA_SAMPLING_PERIOD) {
-                        double gyro_x = e.values[0];
-                        double gyro_y = e.values[1];
-                        double gyro_z = e.values[2];
-                        double gyro = Math.sqrt(gyro_x*gyro_x+gyro_y*gyro_y+gyro_z*gyro_z);
-                        gyros.add(gyro);
-                        lastGyroSampling = e.timestamp;
+                    if (currTime - lastTimeGyro > Constants.DATA_SAMPLING_PERIOD) {
+                        gyro = e.values;
+                        double gyro_magnitude = Math.sqrt(gyro[0]*gyro[0]+gyro[1]*gyro[1]+gyro[2]*gyro[2]);
+                        gyros.add(gyro_magnitude);
+                        lastTimeGyro = e.timestamp;
                     }
                 case Sensor.TYPE_PRESSURE:
                     //pressure_tv.setText("Pressure: " + String.valueOf(e.values[0]));
-                case Sensor.TYPE_ORIENTATION:
-                    float degree = Math.round(e.values[0]);
-                    if (prevBearing == -1f)
-                        prevBearing = degree;
-                    else {
-                        float change = degree - prevBearing;
-                        prevBearing = degree;
-                        bearing += change;
-                        //bearing_tv.setText("Bearing: " + String.valueOf(bearing));
-                    }
-                    break;
                 case Sensor.TYPE_ACCELEROMETER:
-                    if (currTime - lastTimeSampling > Constants.DATA_SAMPLING_PERIOD) {
-                        float[] acceleration = e.values;
+                    if (currTime - lastTimeAccelerometer > Constants.DATA_SAMPLING_PERIOD) {
+                        acceleration = e.values;
                         double acc_magnitude = Math.sqrt(acceleration[0] * acceleration[0] + acceleration[1] * acceleration[1] + acceleration[2] * acceleration[2]);;
                         acc_magnitudes.add(acc_magnitude);
-                        lastTimeSampling = e.timestamp;
+                        lastTimeAccelerometer = e.timestamp;
                     }
-                    if (currTime - lastTimeSteps > Constants.DATA_PROCESSING_PERIOD) {
+                    if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {
                         int noOfSteps = DataProcessing.calculateSteps(baseNoOfSteps,gyros,acc_magnitudes);
                         steps_tv.setText("Steps: "+noOfSteps);
                         if (acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
@@ -87,10 +86,47 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             gyros.clear();
                         }
 
-                        lastTimeSteps = e.timestamp;
+                        lastTimeProcessing = e.timestamp;
+                    }
+                    break;
+                case Sensor.TYPE_MAGNETIC_FIELD:
+                    if (currTime - lastTimeMagnetic > Constants.DATA_SAMPLING_PERIOD) {
+                        magnetic = e.values;
+                        haveMagneticData = true;
                     }
                     break;
                 default:
+                    break;
+            }
+                float[] R1 = new float[9];
+                float[] orientation = new float[3];
+
+                SensorManager.getRotationMatrix(R1, null, acceleration, magnetic);
+                SensorManager.getOrientation(R1, orientation);
+                float yaw = (float)(Math.toDegrees(orientation[0])+360)%360;
+                float pitch = (float)(Math.toDegrees(orientation[1])+360)%360;
+                float roll = (float)(Math.toDegrees(orientation[2])+360)%360;
+            //System.out.println(stoppedPitching);
+            if (haveMagneticData){
+                if (DataProcessing.checkForPitch(gyros)) {
+                    if (stoppedPitching == true) {
+                        stoppedPitching = false;
+                        offsetPitchBegan = yaw - bearing;
+                        System.out.println("YAW: "+yaw+",BEARING "+bearing);
+                    }
+                    if (prevBearing == -1f)
+                        prevBearing = yaw;
+                    else {
+                        float change = yaw - prevBearing;
+                        prevBearing = yaw;
+                        bearing += change;
+                        bearing_tv.setText("Bearing: " + String.valueOf(bearing));
+                    }
+
+                    lastTimeMagnetic = currTime;
+                    haveMagneticData = false;
+                }else
+                    stoppedPitching = true;
             }
         }
 
@@ -110,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), 48, SensorManager.SENSOR_DELAY_FASTEST);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE), 48, SensorManager.SENSOR_DELAY_FASTEST);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), 48, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), 48, SensorManager.SENSOR_DELAY_FASTEST);
         System.out.println("Sensor Manager Resgistered");
     }
 

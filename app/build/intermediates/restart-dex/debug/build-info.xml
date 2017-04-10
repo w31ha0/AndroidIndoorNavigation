@@ -4,30 +4,38 @@
     api-level="23"
     density="xxxhdpi"
     format="7"
-    timestamp="181444951293901"
-    token="-5317615870909893738" >
+    timestamp="194213139478925"
+    token="-5317615870909893738"
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="911" />
+        duration="437" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="737" />
     <task
         name="instant-run-transform"
-        duration="271" />
+        duration="48" />
     <task
         name="verifier"
-        duration="118" />
+        duration="11" />
 
     <artifact
-        location="C:\xampp\htdocs\IndoorNavigation\app\build\outputs\apk\app-debug.apk"
-        type="MAIN" />
+        location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
-    <build timestamp="181444951293901" >
+    <build timestamp="193982888203457" >
         <artifact
             location="C:\xampp\htdocs\IndoorNavigation\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
+    </build>
+    <build
+        timestamp="194213139478925"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

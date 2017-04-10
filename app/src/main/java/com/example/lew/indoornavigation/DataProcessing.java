@@ -13,7 +13,9 @@ public class DataProcessing {
     private static final double DECREASE_TOLERANCE = 0.2;
 
     private static final int WINDOW_TURNS = (int)(1.5 / Constants.DATA_SAMPLING_PERIOD_SEC);
+    private static final int WINDOW_PITCH = (int)(1.5 / Constants.DATA_SAMPLING_PERIOD_SEC);
     private static final double TURN_THRESHOLD = 1.5;
+    private static final double PITCH_THRESHOLD = 0.9;
 
     private static final String DATA_FILE_NAME = "File.txt";
 
@@ -39,7 +41,7 @@ public class DataProcessing {
                     int gyroIndex = (int)(accIndex*(ratio));
                     if ( !checkForTurn(gyroIndex,gyros)) {
                         noOfPeaks++;
-                        //System.out.println("Step detected at "+accIndex);
+                        System.out.println("Step detected at "+accIndex);
                     }
                     windowSize = 0;
                 }
@@ -93,8 +95,20 @@ public class DataProcessing {
             local_acc_variance = Math.sqrt(local_acc_variance);
             list_local_acc_variance.add(local_acc_variance);
         }
-        saveDataToExcel(list_local_acc_variance);
+        //saveDataToExcel(list_local_acc_variance);
         return list_local_acc_variance;
+    }
+
+    public static boolean checkForPitch(ArrayList<Double> gyros){
+        int lower = gyros.size()-WINDOW_PITCH;
+        int upper = gyros.size()-1;
+        if (lower < 0)
+            lower = 0;
+        for (int i = lower; i <= upper;i++) {
+            if (gyros.get(i) > PITCH_THRESHOLD)
+                return true;
+        }
+        return false;
     }
 
     private static boolean checkForTurn(int index,ArrayList<Double> gyros){
