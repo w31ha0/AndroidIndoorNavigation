@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView bearing_tv;
     private TextView steps_tv;
     private TextView pressure_tv;
+    private Button reset;
 
     private SensorManager sensorManager;
 
@@ -25,34 +27,56 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastTimeProcessing = 0;
     private long lastTimeMagnetic = 0;
 
-    private float prevBearing = -1f;
-    private float bearing = 0f;
-    private int baseNoOfSteps = 0;
+    private double[] baseCurrentPosition;
 
     private float[] acceleration;
     private float[] magnetic;
     private float[] gyro;
     private boolean haveMagneticData = false;
     private boolean stoppedPitching = true;
-    private double offsetPitchBegan = 0;
 
     private ArrayList<Double> acc_magnitudes;
     private ArrayList<Double> gyros;
+    private ArrayList<Float> bearings;
+
+    public static double[] currentPos;
+    public static float bearing = 0f;
+    public static float prevBearing = -1f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(new FloorMapView(this));
 
         bearing_tv = (TextView) findViewById(R.id.bearing);
         pressure_tv = (TextView) findViewById(R.id.pressure);
         steps_tv = (TextView) findViewById(R.id.steps);
-
+        reset = (Button) findViewById(R.id.button);
         acc_magnitudes = new ArrayList<>();
+        bearings = new ArrayList<>();
         gyros = new ArrayList<>();
         gyro = new float[3];
         magnetic = new float[3];
         acceleration = new float[3];
+        baseCurrentPosition = new double[2];
+        baseCurrentPosition[0] = 0.0;
+        baseCurrentPosition[1] = 0.0;
+        currentPos = new double[2];
+        currentPos[0] = 0.0;
+        currentPos[1] = 0.0;
+
+        /*reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(Math.sin(Math.toRadians(-310)));
+                bearing = 0f;
+                baseCurrentPosition[0] = 0;
+                baseCurrentPosition[1] = 0;
+                acc_magnitudes.clear();
+                bearings.clear();
+                gyros.clear();
+            }
+        });*/
 
         RegisterListeners();
     }
@@ -76,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         double acc_magnitude = Math.sqrt(acceleration[0] * acceleration[0] + acceleration[1] * acceleration[1] + acceleration[2] * acceleration[2]);;
                         if (acc_magnitude < 1000 && acc_magnitude > 1) {
                             acc_magnitudes.add(acc_magnitude);
+                            bearings.add(bearing);
                             this.acceleration = acceleration;
                         }
                         lastTimeAccelerometer = e.timestamp;
                     }
                     if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {
-                        int noOfSteps = DataProcessing.calculateSteps(baseNoOfSteps,gyros,acc_magnitudes);
-                        steps_tv.setText("Steps: "+noOfSteps);
+                        currentPos = DataProcessing.computeCurrentPosition(baseCurrentPosition,gyros,acc_magnitudes,bearings);
+                        //steps_tv.setText("X: "+pos[0]+", Y: "+pos[1]);
                         if (acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
-                            baseNoOfSteps = noOfSteps;
+                            baseCurrentPosition = currentPos;
                             acc_magnitudes.clear();
                             gyros.clear();
                         }
@@ -110,12 +135,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float pitch = (float)(Math.toDegrees(orientation[1])+360)%360;
                 float roll = (float)(Math.toDegrees(orientation[2])+360)%360;
             //System.out.println(stoppedPitching);
+            //System.out.println("Bearing "+bearing+",prevBearing: "+prevBearing);
             if (haveMagneticData){
+                /*if (prevBearing == -1f)
+                    prevBearing = yaw;
+                else {
+                    float change = yaw - prevBearing;
+                    prevBearing = yaw;
+                    bearing += change;
+                    bearing_tv.setText("Bearing: " + String.valueOf(bearing));
+                }
+
+                lastTimeMagnetic = currTime;
+                haveMagneticData = false;*/
                 if (DataProcessing.checkForPitch(gyros)) {
                     if (stoppedPitching == true) {
                         stoppedPitching = false;
-                        offsetPitchBegan = yaw - bearing;
-                        System.out.println("YAW: "+yaw+",BEARING "+bearing);
+                        //System.out.println("YAW: "+yaw+",BEARING "+bearing);
                     }
                     if (prevBearing == -1f)
                         prevBearing = yaw;
@@ -123,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         float change = yaw - prevBearing;
                         prevBearing = yaw;
                         bearing += change;
-                        bearing_tv.setText("Bearing: " + String.valueOf(bearing));
+                        //bearing_tv.setText("Bearing: " + String.valueOf(bearing));
                     }
 
                     lastTimeMagnetic = currTime;

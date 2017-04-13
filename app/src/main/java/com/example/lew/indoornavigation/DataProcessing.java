@@ -13,18 +13,23 @@ public class DataProcessing {
     private static final double DECREASE_TOLERANCE = 0.2;
 
     private static final int WINDOW_TURNS = (int)(1.5 / Constants.DATA_SAMPLING_PERIOD_SEC);
-    private static final int WINDOW_PITCH = (int)(1.5 / Constants.DATA_SAMPLING_PERIOD_SEC);
+    private static final int WINDOW_PITCH = (int)(1 / Constants.DATA_SAMPLING_PERIOD_SEC);
     private static final double TURN_THRESHOLD = 1.5;
-    private static final double PITCH_THRESHOLD = 0.9;
+    private static final double PITCH_THRESHOLD = 1.5;
 
     private static final String DATA_FILE_NAME = "File.txt";
 
-    public static int calculateSteps(int baseNoOfSteps,ArrayList<Double> gyros,ArrayList<Double> acc_magnitudes){
+    public static double[] computeCurrentPosition(double[] baseCurrentPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
         double prevAcc = 0;
         boolean increasing = false;
         int windowSize = 0;
         double decreaseCounter = 0;
         int noOfPeaks = 0;
+        boolean first = true;
+        double pos_x = 0;
+        double pos_y = 0 ;
+        double stride_length = 76.2;
+
         ArrayList<Double> processed_values = processRawAcceleration(acc_magnitudes);
         for (Double acc:processed_values){
             if (acc > prevAcc) {
@@ -40,7 +45,15 @@ public class DataProcessing {
                     double ratio = (double)gyros.size()/(double)acc_magnitudes.size();
                     int gyroIndex = (int)(accIndex*(ratio));
                     if ( !checkForTurn(gyroIndex,gyros)) {
+                        if (first){
+                            first = false;
+                            continue;
+                        }
                         noOfPeaks++;
+                        int index = processed_values.indexOf(acc);
+                        double bearing = bearings.get(index);
+                        pos_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
+                        pos_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
                         //System.out.println("Step detected at "+accIndex);
                     }
                     windowSize = 0;
@@ -48,12 +61,14 @@ public class DataProcessing {
             }
             prevAcc = acc;
         }
-        int noOfSteps = baseNoOfSteps + noOfPeaks;
         if (acc_magnitudes.size()> Constants.MAX_SIZE_LIST){
             acc_magnitudes.clear();
             gyros.clear();
         }
-        return noOfSteps;
+        double[] pos =  new double[2];
+        pos[0] = baseCurrentPos[0] + pos_x;
+        pos[1] = baseCurrentPos[1] + pos_y;
+        return pos;
     }
 
     private static ArrayList<Double> processRawAcceleration(ArrayList<Double> acc_magnitudes) {
