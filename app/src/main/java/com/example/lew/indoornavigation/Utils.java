@@ -9,7 +9,6 @@ public class Utils {
 
     public static float[] rotateTriangle(int rotate,float x1,float y1,float x2,float y2,float x3,float y3,float centerX,float centerY){
         float angle = (float) Math.toRadians(rotate); // Angle to rotate
-        System.out.println(rotate);
         // Rotating
         float x1r = (float) ((x1 - centerX) * Math.cos(angle) - (y1 - centerY) * Math.sin(angle) + centerX);
         float y1r = (float) ((x1 - centerX) * Math.sin(angle) + (y1 - centerY) * Math.cos(angle) + centerY);
