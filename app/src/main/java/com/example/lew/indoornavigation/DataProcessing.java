@@ -71,6 +71,34 @@ public class DataProcessing {
         return pos;
     }
 
+    private static double[] getFinalDestination(int[][] walls, double x1, double y1, double x2, double y2){
+        double[] finalPosition = new double[2];
+        for(int i=0;i<walls.length;i++){
+            int[] pt1 = { walls[i][0],walls[i][1]};
+            int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
+            double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
+            if (Double.isInfinite(result[0]) || Double.isInfinite(result[1])) {
+                finalPosition[0] = x2;
+                finalPosition[1] = y2;
+            }else
+                finalPosition = result;
+        }
+        return finalPosition;
+    }
+
+    private static double[] getIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
+        double m1 = (y2-y1)/(x2-x1);
+        double m2 = (y4-y3)/(x4-x3);
+        //System.out.println("m1 is "+m1+" while m2 is "+m2);
+
+        double x = (m1*x1 - m2*x3 + y3 - y1)/(m1 - m2);
+        double y = (y3*m1 - y1*m2 + m1*m2*x1 - m1*m2*x3)/(m1 - m2);
+
+        double[] result = {x,y};
+        //System.out.println("Intersection is at "+result[0]+","+result[1]);
+        return result;
+    }
+
     private static ArrayList<Double> processRawAcceleration(ArrayList<Double> acc_magnitudes) {
         int windowSize = (int) (0.162 * (1 / Constants.DATA_SAMPLING_PERIOD_SEC));
         int global_lower_limit = 0;

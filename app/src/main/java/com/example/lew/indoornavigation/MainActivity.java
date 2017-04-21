@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastTimeProcessing = 0;
     private long lastTimeMagnetic = 0;
 
-    private double[] baseCurrentPosition;
-
     private float[] currentAcceleration;
     private float[] currentMagnetic;
     private float[] currentGyro;
@@ -32,14 +30,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ArrayList<Double> list_gyros;
     private ArrayList<Float> list_bearings;
 
-    public static double[] currentPos;
     public static float bearing = 0f;
     public static float prevBearing = -1f;
+    private FloorMapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new FloorMapView(this));
+        mapView = new FloorMapView(this);
+        setContentView(mapView);
 
         list_acc_magnitudes = new ArrayList<>();
         list_bearings = new ArrayList<>();
@@ -48,13 +47,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentGyro = new float[3];
         currentMagnetic = new float[3];
         currentAcceleration = new float[3];
-
-        baseCurrentPosition = new double[2];
-        baseCurrentPosition[0] = 0.0;
-        baseCurrentPosition[1] = 0.0;
-        currentPos = new double[2];
-        currentPos[0] = 0.0;
-        currentPos[1] = 0.0;
 
         RegisterListeners();
     }
@@ -84,9 +76,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         lastTimeAccelerometer = e.timestamp;
                     }
                     if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {
-                        currentPos = DataProcessing.computeCurrentPosition(baseCurrentPosition, list_gyros, list_acc_magnitudes, list_bearings);
+                        double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getBaseCurrentPosition(), list_gyros, list_acc_magnitudes, list_bearings);
+                        mapView.setCurrentPos(currentPos);
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
-                            baseCurrentPosition = currentPos;
+                            mapView.setBaseCurrentPosition(currentPos);
                             list_acc_magnitudes.clear();
                             list_gyros.clear();
                         }

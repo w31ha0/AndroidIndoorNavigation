@@ -13,6 +13,8 @@ import android.view.View;
  * Created by Lew on 13/4/2017.
  */
 public class FloorMapView extends View{
+    int[][] wall_corners = {{660,662},{940,662},{940,73},{1156,73},{1156,606},{1237,606 },{1237,704},{1154,704},{1154,802},{1111,802},{1043,869}
+            ,{603,869},{603,701},{657,701}};
 
     private final int WIDTH_MAP = 1279;
     private final int HEIGHT_MAP = 1010;
@@ -29,6 +31,8 @@ public class FloorMapView extends View{
     private Bitmap map;
     private boolean resized = false;
 
+    private double[] baseCurrentPosition;
+    public  double[] currentPos;
     Paint paint = null;
     int[] pt1,pt2,pt3;
 
@@ -42,6 +46,13 @@ public class FloorMapView extends View{
 
         map = BitmapFactory.decodeResource(context.getResources(),
             R.drawable.map);
+
+        baseCurrentPosition = new double[2];
+        baseCurrentPosition[0] = 0.0;
+        baseCurrentPosition[1] = 0.0;
+        currentPos = new double[2];
+        currentPos[0] = 0.0;
+        currentPos[1] = 0.0;
     }
 
     @Override
@@ -51,8 +62,9 @@ public class FloorMapView extends View{
         if (resized != true) {
             SCREEN_WIDTH = getWidth();
             SCREEN_HEIGHT = getHeight();
-            float scale = (float)WIDTH_MAP/(float)SCREEN_WIDTH;
-            pixelTocm = pixelTocm *scale;
+            float scaleX = (float)WIDTH_MAP/(float)SCREEN_WIDTH;
+            float scaleY = (float)WIDTH_MAP/(float)SCREEN_WIDTH;
+            pixelTocm = pixelTocm *scaleX;
             map = Bitmap.createScaledBitmap(map, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
             initial_pos_x = (int) ((1/pixelTocm) * initial_pos_x);
@@ -60,11 +72,18 @@ public class FloorMapView extends View{
             triangle_side_length = (int) ((1/pixelTocm) * iconSizecm);
             triangle_centre_height = triangle_side_length*3;
 
+            for (int i=0;i<wall_corners.length;i++){
+                int[] pt = wall_corners[i];
+                wall_corners[i][0] = (int) (pt[0]*(1/scaleX));
+                wall_corners[i][1] = (int) (pt[1]*(1/scaleY));
+                System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
+            }
+
             resized = true;
         }
 
-        int pos_x = initial_pos_x + (int)MainActivity.currentPos[0];
-        int pos_y =  initial_pos_y + (int)MainActivity.currentPos[1];
+        int pos_x = initial_pos_x + (int)currentPos[0];
+        int pos_y =  initial_pos_y + (int)currentPos[1];
 
         pt1[0] = pos_x - triangle_side_length/2;
         pt1[1] = pos_y - triangle_centre_height/2;
@@ -90,4 +109,19 @@ public class FloorMapView extends View{
 
     }
 
+    public double[] getCurrentPos() {
+        return currentPos;
+    }
+
+    public void setCurrentPos(double[] currentPos) {
+        this.currentPos = currentPos;
+    }
+
+    public double[] getBaseCurrentPosition() {
+        return baseCurrentPosition;
+    }
+
+    public void setBaseCurrentPosition(double[] baseCurrentPosition) {
+        this.baseCurrentPosition = baseCurrentPosition;
+    }
 }
