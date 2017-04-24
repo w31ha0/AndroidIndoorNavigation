@@ -19,15 +19,15 @@ public class DataProcessing {
 
     private static final String DATA_FILE_NAME = "File.txt";
 
-    public static double[] computeCurrentPosition(double[] baseCurrentPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
+    public static double[] computeCurrentPosition(int[][] walls,double[] initialPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
         double prevAcc = 0;
         boolean increasing = false;
         int windowSize = 0;
         double decreaseCounter = 0;
         int noOfPeaks = 0;
         boolean first = true;
-        double pos_x = 0;
-        double pos_y = 0 ;
+        double pos_x = initialPos[0];
+        double pos_y = initialPos[1];
         double stride_length = 76.2;
 
         ArrayList<Double> processed_values = processRawAcceleration(acc_magnitudes);
@@ -52,8 +52,12 @@ public class DataProcessing {
                         noOfPeaks++;
                         int index = processed_values.indexOf(acc);
                         double bearing = bearings.get(index);
-                        pos_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
-                        pos_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
+                        double raw_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
+                        double raw_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
+                        double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
+                        pos_x = result[0];
+                        pos_y = result[1];
+
                         //System.out.println("Step detected at "+accIndex);
                     }
                     windowSize = 0;
@@ -66,30 +70,38 @@ public class DataProcessing {
             gyros.clear();
         }
         double[] pos =  new double[2];
-        pos[0] = baseCurrentPos[0] + pos_x;
-        pos[1] = baseCurrentPos[1] + pos_y;
+        pos[0] = pos_x;
+        pos[1] = pos_y;
         return pos;
     }
 
-    private static double[] getFinalDestination(int[][] walls, double x1, double y1, double x2, double y2){
+    public static double[] getFinalDestination(int[][] walls, double x1, double y1, double x2, double y2){
+        System.out.println("Getting final destination from "+x1+","+y1+" to "+x2+","+y2);
         double[] finalPosition = new double[2];
+        double  lowestDistance = 1000;
         for(int i=0;i<walls.length;i++){
             int[] pt1 = { walls[i][0],walls[i][1]};
             int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
             double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
-            if (Double.isInfinite(result[0]) || Double.isInfinite(result[1])) {
+            //System.out.println("Possible intersection at "+result[0]+","+result[1]);
+            if (Double.isNaN(result[0]) || Double.isNaN(result[1])){
                 finalPosition[0] = x2;
                 finalPosition[1] = y2;
-            }else
-                finalPosition = result;
+            }else if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1])){
+                System.out.println("Found intersection at "+result[0]+","+result[1]);
+                finalPosition[0] = result[0]-0.2*(result[0] - x1);
+                finalPosition[1] = result[1]-0.2*(result[1] - y1);
+                return finalPosition;
+            }
         }
+        System.out.println("No intersection so result is "+finalPosition[0]+","+finalPosition[1]);
         return finalPosition;
     }
 
     private static double[] getIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
         double m1 = (y2-y1)/(x2-x1);
         double m2 = (y4-y3)/(x4-x3);
-        //System.out.println("m1 is "+m1+" while m2 is "+m2);
+        //System.out.println("Testing from wall "+x1+","+y1+" to "+x2+","+y2+" against point from "+x3+","+y3+" to "+x4+","+y4);
 
         double x = (m1*x1 - m2*x3 + y3 - y1)/(m1 - m2);
         double y = (y3*m1 - y1*m2 + m1*m2*x1 - m1*m2*x3)/(m1 - m2);

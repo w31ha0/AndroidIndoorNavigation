@@ -76,12 +76,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         lastTimeAccelerometer = e.timestamp;
                     }
                     if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {
-                        double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getBaseCurrentPosition(), list_gyros, list_acc_magnitudes, list_bearings);
-                        mapView.setCurrentPos(currentPos);
+                        double[] initialPos = new double[2];
+                        initialPos[0] = mapView.getInitial_pos_x();
+                        initialPos[1] = mapView.getInitial_pos_y();
+                        double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
+                        System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
+                        mapView.currentPos = currentPos;
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
-                            mapView.setBaseCurrentPosition(currentPos);
+                            /*mapView.setBaseCurrentPosition(currentPos);
                             list_acc_magnitudes.clear();
-                            list_gyros.clear();
+                            list_gyros.clear();*/
                         }
 
                         lastTimeProcessing = e.timestamp;
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float pitch = (float)(Math.toDegrees(orientation[1])+360)%360;
                 float roll = (float)(Math.toDegrees(orientation[2])+360)%360;
             if (haveMagneticData){
-                if (prevBearing == -1f)
+                /*if (prevBearing == -1f)
                     prevBearing = yaw;
                 else {
                     float change = yaw - prevBearing;
@@ -113,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     bearing += change;
                 }
                 lastTimeMagnetic = currTime;
-                haveMagneticData = false;
-                /*if (DataProcessing.checkForPitch(list_gyros)) {
+                haveMagneticData = false;*/
+                if (DataProcessing.checkForPitch(list_gyros)) {
                     if (stoppedPitching == true) {
                         stoppedPitching = false;
                     }
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     lastTimeMagnetic = currTime;
                     haveMagneticData = false;
                 }else
-                    stoppedPitching = true;*/
+                    stoppedPitching = true;
             }
         }
 

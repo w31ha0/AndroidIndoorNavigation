@@ -1,0 +1,73 @@
+04-23 18:12:07.501 8143-8170/com.example.lew.indoornavigation W/System: ClassLoader referenced unknown path: /data/data/com.example.lew.indoornavigation/lib
+04-23 18:12:07.601 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: #1 mView = android.widget.LinearLayout{81fdf0 V.E...... ......I. 0,0-0,0}
+04-23 18:12:07.641 8143-8143/com.example.lew.indoornavigation D/SensorManager: unregisterListener ::   
+04-23 18:12:07.641 8143-8143/com.example.lew.indoornavigation I/System.out: Sensor listener unregistered.
+04-23 18:12:07.641 8143-8143/com.example.lew.indoornavigation W/ResourcesManager: getTopLevelResources: /data/app/com.example.lew.indoornavigation-1/base.apk / 1.0 running in com.example.lew.indoornavigation rsrc of package com.example.lew.indoornavigation
+04-23 18:12:07.751 8143-8150/com.example.lew.indoornavigation W/art: Suspending all threads took: 47.733ms
+04-23 18:12:07.831 8143-8143/com.example.lew.indoornavigation D/SensorManager: registerListener :: 0, MPU6500 Acceleration Sensor, 48, 0,  
+04-23 18:12:07.881 8143-8143/com.example.lew.indoornavigation I/System.out: Sensor Manager Resgistered
+04-23 18:12:07.881 8143-8143/com.example.lew.indoornavigation D/Activity: performCreate Call Injection manager
+04-23 18:12:07.881 8143-8143/com.example.lew.indoornavigation I/InjectionManager: dispatchOnViewCreated > Target : com.example.lew.indoornavigation.MainActivity isFragment :false
+04-23 18:12:07.891 8143-8143/com.example.lew.indoornavigation D/SecWifiDisplayUtil: Metadata value : SecSettings2
+04-23 18:12:07.891 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: #1 mView = com.android.internal.policy.PhoneWindow$DecorView{2709f52 I.E...... R.....ID 0,0-0,0}
+04-23 18:12:07.921 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: #3 mView = null
+04-23 18:12:07.941 8143-8143/com.example.lew.indoornavigation I/System.out: Acurracy changed 3
+04-23 18:12:07.941 8143-8143/com.example.lew.indoornavigation I/System.out: Acurracy changed 3
+04-23 18:12:07.981 8143-8172/com.example.lew.indoornavigation D/mali_winsys: new_window_surface returns 0x3000,  [1077x176]-format:1
+04-23 18:12:08.011 8143-8172/com.example.lew.indoornavigation D/mali_winsys: new_window_surface returns 0x3000,  [1440x2560]-format:1
+04-23 18:12:08.011 8143-8143/com.example.lew.indoornavigation E/ViewRootImpl: sendUserActionEvent() mView == null
+04-23 18:12:08.021 8143-8143/com.example.lew.indoornavigation I/InjectionManager: dispatchCreateOptionsMenu :com.example.lew.indoornavigation.MainActivity
+04-23 18:12:08.021 8143-8143/com.example.lew.indoornavigation I/InjectionManager: dispatchPrepareOptionsMenu :com.example.lew.indoornavigation.MainActivity
+04-23 18:12:08.021 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: MSG_RESIZED_REPORT: ci=Rect(0, 0 - 0, 0) vi=Rect(0, 0 - 0, 0) or=1
+04-23 18:12:08.051 8143-8172/com.example.lew.indoornavigation V/RenderScript: 0x7f4bd76000 Launching thread(s), CPUs 8
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 743,1494
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1058,1494
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1058,2157
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1301,2157
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1301,1557
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1392,1557
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1392,1447
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1299,1447
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1299,1337
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1250,1337
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 1174,1261
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 678,1261
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 678,1450
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Wall scaled to 739,1450
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Getting final destination from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 743.0,1494.0 to 1058.0,1494.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at -Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1058.0,1494.0 to 1058.0,2157.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at NaN,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1058.0,2157.0 to 1301.0,2157.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at -Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1301.0,2157.0 to 1301.0,1557.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at NaN,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1301.0,1557.0 to 1392.0,1557.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at -Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1392.0,1557.0 to 1392.0,1447.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at NaN,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1392.0,1447.0 to 1299.0,1447.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1299.0,1447.0 to 1299.0,1337.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at NaN,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1299.0,1337.0 to 1250.0,1337.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1250.0,1337.0 to 1174.0,1261.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at 475.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: 475.0 is in between 1196.0 and 1696.0: false
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 1174.0,1261.0 to 678.0,1261.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 678.0,1261.0 to 678.0,1450.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at NaN,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 678.0,1450.0 to 739.0,1450.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at -Infinity,NaN
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Testing from wall 739.0,1450.0 to 743.0,1494.0 against point from 1196.0,562.0 to 1696.0,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: Possible intersection at 658.2727272727273,562.0
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: 658.2727272727273 is in between 1196.0 and 1696.0: false
+04-23 18:12:08.111 8143-8143/com.example.lew.indoornavigation I/System.out: No intersection so result is 1696.0,562.0
+04-23 18:12:08.181 8143-8143/com.example.lew.indoornavigation I/System.out: Acurracy changed 1
+04-23 18:12:08.191 8143-8143/com.example.lew.indoornavigation I/System.out: Acurracy changed 3
+04-23 18:12:08.191 8143-8143/com.example.lew.indoornavigation I/System.out: Acurracy changed 3
+04-23 18:12:08.191 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: MSG_RESIZED_REPORT: ci=Rect(0, 96 - 0, 0) vi=Rect(0, 96 - 0, 0) or=1
+04-23 18:12:09.631 8143-8143/com.example.lew.indoornavigation D/ViewRootImpl: #3 mView = null

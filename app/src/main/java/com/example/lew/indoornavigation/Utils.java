@@ -7,6 +7,12 @@ import java.util.ArrayList;
  */
 public class Utils {
 
+    public static boolean isBetween(double a, double b, double c) {
+        boolean result = b >= a ? c >= a && c <= b : c >= b && c <= a;
+        //System.out.println(c+" is in between "+a+" and "+b+": "+result);
+        return result;
+    }
+
     public static float[] rotateTriangle(int rotate,float x1,float y1,float x2,float y2,float x3,float y3,float centerX,float centerY){
         float angle = (float) Math.toRadians(rotate); // Angle to rotate
         // Rotating
