@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.provider.ContactsContract;
 import android.view.View;
 
 /**
@@ -17,8 +18,8 @@ public class FloorMapView extends View{
         return wall_corners;
     }
 
-    int[][] wall_corners = {{660,662},{940,662},{940,73},{1156,73},{1156,606},{1237,606 },{1237,704},{1154,704},{1154,802},{1111,802},{1043,869}
-            ,{603,869},{603,701},{657,701}};
+    int[][] wall_corners = {{660,662},{940,662},{940,73},{1156,73},{1156,606},{1237,606},{1237,704},{1154,704},{1154,802},{1111,802},{1043,869}
+            ,{603,869},{603,701},{660,701}};
 
     private final int WIDTH_MAP = 1279;
     private final int HEIGHT_MAP = 1010;
@@ -83,11 +84,14 @@ public class FloorMapView extends View{
                 wall_corners[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
                 System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
             }
-            initial_pos_x = (int) ((1/pixelTocm) * initial_pos_x);
-            initial_pos_y = (int) ((1/pixelTocm) * initial_pos_y);
+            initial_pos_x = (int) 1187.3890286944434;
+            initial_pos_y = 775;
+            //initial_pos_x = (int) ((1/pixelTocm) * initial_pos_x);
+            //initial_pos_y = (int) ((1/pixelTocm) * initial_pos_y);
             currentPos[0] = initial_pos_x;
             currentPos[1] = initial_pos_y;
-            DataProcessing.getFinalDestination(wall_corners,initial_pos_x,initial_pos_y,initial_pos_x-60,initial_pos_y);
+            DataProcessing.getFinalDestination(wall_corners,initial_pos_x,initial_pos_y,initial_pos_x-500,initial_pos_y+50);
+            //DataProcessing.getIntersection(wall_corners[3][0],wall_corners[3][1],wall_corners[4][0],wall_corners[4][1],1200,1100,1400,1300);
             resized = true;
         }
 
@@ -114,6 +118,8 @@ public class FloorMapView extends View{
 
         canvas.drawBitmap(map,0,0,paint);
         canvas.drawPath(path, paint);
+        paint.setTextSize(200);
+        canvas.drawText(String.valueOf((int) MainActivity.bearing),100,300,paint);
 
         invalidate();
 

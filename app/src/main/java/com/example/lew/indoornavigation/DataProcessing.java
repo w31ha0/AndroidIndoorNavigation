@@ -84,27 +84,39 @@ public class DataProcessing {
             int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
             double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
             //System.out.println("Possible intersection at "+result[0]+","+result[1]);
-            if (Double.isNaN(result[0]) || Double.isNaN(result[1])){
+            if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1])){
+                System.out.println("Found intersection at "+result[0]+","+result[1]);
+                finalPosition[0] = result[0]-0.01*(result[0] - x1);
+                finalPosition[1] = result[1]-0.01*(result[1] - y1);
+                return finalPosition;
+            }else{
                 finalPosition[0] = x2;
                 finalPosition[1] = y2;
-            }else if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1])){
-                System.out.println("Found intersection at "+result[0]+","+result[1]);
-                finalPosition[0] = result[0]-0.2*(result[0] - x1);
-                finalPosition[1] = result[1]-0.2*(result[1] - y1);
-                return finalPosition;
             }
         }
         System.out.println("No intersection so result is "+finalPosition[0]+","+finalPosition[1]);
         return finalPosition;
     }
 
-    private static double[] getIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
+    public static double[] getIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
         double m1 = (y2-y1)/(x2-x1);
         double m2 = (y4-y3)/(x4-x3);
         //System.out.println("Testing from wall "+x1+","+y1+" to "+x2+","+y2+" against point from "+x3+","+y3+" to "+x4+","+y4);
+        //System.out.println("y-"+y1+"="+m1+"(x-"+x1+")");
+        //System.out.println("y-"+y2+"="+m2+"(x-"+x2+")");
 
-        double x = (m1*x1 - m2*x3 + y3 - y1)/(m1 - m2);
-        double y = (y3*m1 - y1*m2 + m1*m2*x1 - m1*m2*x3)/(m1 - m2);
+        double x =0.0;
+        double y =0.0;
+        if (Double.isInfinite(m1)){
+             x = x1;
+             y = m2*(x-x3)+y3;
+        }else if( m1 == 0.0){
+             y = y1;
+             x = ((y-y3)/m2)+x3;
+        }else{
+             x = (m1 * x1 - m2 * x3 + y3 - y1) / (m1 - m2);
+             y = (y3 * m1 - y1 * m2 + m1 * m2 * x1 - m1 * m2 * x3) / (m1 - m2);
+        }
 
         double[] result = {x,y};
         //System.out.println("Intersection is at "+result[0]+","+result[1]);
