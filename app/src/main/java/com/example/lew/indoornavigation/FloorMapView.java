@@ -37,8 +37,8 @@ public class FloorMapView extends View{
     private Bitmap map;
     private boolean resized = false;
 
-    private double[] baseCurrentPosition;
-    public  static double[] currentPos;
+    public static double[] baseCurrentPosition;
+    public static double[] currentPos;
     Paint paint = null;
     int[] pt1,pt2,pt3;
 
@@ -84,20 +84,19 @@ public class FloorMapView extends View{
                 wall_corners[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
                 System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
             }
-            initial_pos_x = (int) 1187.3890286944434;
+            initial_pos_x = (int) 1184.703472348348;
             initial_pos_y = 775;
             //initial_pos_x = (int) ((1/pixelTocm) * initial_pos_x);
             //initial_pos_y = (int) ((1/pixelTocm) * initial_pos_y);
             currentPos[0] = initial_pos_x;
             currentPos[1] = initial_pos_y;
-            DataProcessing.getFinalDestination(wall_corners,initial_pos_x,initial_pos_y,initial_pos_x-500,initial_pos_y+50);
+            //DataProcessing.getFinalDestination(wall_corners,1333.6004347395194,804.0482048229254,1404.9484043996279,777.2917621337291);
             //DataProcessing.getIntersection(wall_corners[3][0],wall_corners[3][1],wall_corners[4][0],wall_corners[4][1],1200,1100,1400,1300);
             resized = true;
         }
 
-        int pos_x = (int)currentPos[0];
-        int pos_y = (int)currentPos[1];
-        //System.out.println(pos_x+","+pos_y);
+        int pos_x = (int) (baseCurrentPosition[0] + (int)currentPos[0]);
+        int pos_y = (int) (baseCurrentPosition[1] + (int)currentPos[1]);
 
         pt1[0] = pos_x - triangle_side_length/2;
         pt1[1] = pos_y - triangle_centre_height/2;

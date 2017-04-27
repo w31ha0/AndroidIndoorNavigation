@@ -79,13 +79,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         double[] initialPos = new double[2];
                         initialPos[0] = mapView.getInitial_pos_x();
                         initialPos[1] = mapView.getInitial_pos_y();
+                        System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
-                        System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
+                        //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.currentPos = currentPos;
+                        System.out.println(list_acc_magnitudes.size());
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
-                            /*mapView.setBaseCurrentPosition(currentPos);
+                            double[] newbase = new double[2];
+                            newbase[0] = mapView.baseCurrentPosition[0] + mapView.currentPos[0];
+                            newbase[1] = mapView.baseCurrentPosition[1] + mapView.currentPos[1];
+                            System.out.println("Setting new base to "+newbase[0]+","+newbase[1]);
+                            mapView.baseCurrentPosition = newbase;
+                            System.out.println("Base is "+mapView.baseCurrentPosition[0]+","+mapView.baseCurrentPosition[1]);
                             list_acc_magnitudes.clear();
-                            list_gyros.clear();*/
+                            list_gyros.clear();
+                            list_bearings.clear();
                         }
 
                         lastTimeProcessing = e.timestamp;
@@ -109,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 float pitch = (float)(Math.toDegrees(orientation[1])+360)%360;
                 float roll = (float)(Math.toDegrees(orientation[2])+360)%360;
             if (haveMagneticData){
-                /*if (prevBearing == -1f)
+                if (prevBearing == -1f)
                     prevBearing = yaw;
                 else {
                     float change = yaw - prevBearing;
@@ -117,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     bearing += change;
                 }
                 lastTimeMagnetic = currTime;
-                haveMagneticData = false;*/
-                if (DataProcessing.checkForPitch(list_gyros)) {
+                haveMagneticData = false;
+                /*if (DataProcessing.checkForPitch(list_gyros)) {
                     if (stoppedPitching == true) {
                         stoppedPitching = false;
                     }
@@ -135,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     lastTimeMagnetic = currTime;
                     haveMagneticData = false;
                 }else
-                    stoppedPitching = true;
+                    stoppedPitching = true;*/
             }
         }
 

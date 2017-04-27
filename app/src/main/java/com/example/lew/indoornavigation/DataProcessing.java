@@ -1,6 +1,9 @@
 package com.example.lew.indoornavigation;
 
 import android.os.Environment;
+
+import org.apache.poi.hpsf.Util;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -31,7 +34,9 @@ public class DataProcessing {
         double stride_length = 76.2;
 
         ArrayList<Double> processed_values = processRawAcceleration(acc_magnitudes);
+        int index = -1;
         for (Double acc:processed_values){
+            index++;
             if (acc > prevAcc) {
                 increasing = true;
                 windowSize++;
@@ -50,10 +55,10 @@ public class DataProcessing {
                             continue;
                         }
                         noOfPeaks++;
-                        int index = processed_values.indexOf(acc);
                         double bearing = bearings.get(index);
                         double raw_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
                         double raw_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
+                        System.out.println("Getting final destination from "+pos_x+","+pos_y+" to "+raw_x+","+raw_y+" at an angle of "+bearing+" with index "+index+" with list size "+acc_magnitudes.size());
                         double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
                         pos_x = result[0];
                         pos_y = result[1];
@@ -65,10 +70,6 @@ public class DataProcessing {
             }
             prevAcc = acc;
         }
-        if (acc_magnitudes.size()> Constants.MAX_SIZE_LIST){
-            acc_magnitudes.clear();
-            gyros.clear();
-        }
         double[] pos =  new double[2];
         pos[0] = pos_x;
         pos[1] = pos_y;
@@ -76,7 +77,6 @@ public class DataProcessing {
     }
 
     public static double[] getFinalDestination(int[][] walls, double x1, double y1, double x2, double y2){
-        System.out.println("Getting final destination from "+x1+","+y1+" to "+x2+","+y2);
         double[] finalPosition = new double[2];
         double  lowestDistance = 1000;
         for(int i=0;i<walls.length;i++){
@@ -84,8 +84,9 @@ public class DataProcessing {
             int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
             double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
             //System.out.println("Possible intersection at "+result[0]+","+result[1]);
-            if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1])){
-                System.out.println("Found intersection at "+result[0]+","+result[1]);
+            if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1]) //to make sure intersection is in the right direction
+                    && Utils.isBetween(pt1[0],pt2[0],result[0]) && Utils.isBetween(pt1[1],pt2[1],result[1])){ //to make sure it coincides with wall
+                System.out.println("Collision detected at "+result[0]+","+result[1]);
                 finalPosition[0] = result[0]-0.01*(result[0] - x1);
                 finalPosition[1] = result[1]-0.01*(result[1] - y1);
                 return finalPosition;
@@ -94,7 +95,7 @@ public class DataProcessing {
                 finalPosition[1] = y2;
             }
         }
-        System.out.println("No intersection so result is "+finalPosition[0]+","+finalPosition[1]);
+        //System.out.println("Nesult is "+finalPosition[0]+","+finalPosition[1]);
         return finalPosition;
     }
 

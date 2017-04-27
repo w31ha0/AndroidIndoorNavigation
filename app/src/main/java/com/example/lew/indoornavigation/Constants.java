@@ -7,7 +7,7 @@ public class Constants {
 
     public static final float DATA_SAMPLING_PERIOD = 0.01f * 1000000000f;
     public static final float DATA_PROCESSING_PERIOD = 1f * 1000000000f;
-    public static final int MAX_SIZE_LIST = 5000;
+    public static final int MAX_SIZE_LIST = 1000;
     public static final float DATA_SAMPLING_PERIOD_SEC = DATA_SAMPLING_PERIOD/1000000000f;
 
 }
