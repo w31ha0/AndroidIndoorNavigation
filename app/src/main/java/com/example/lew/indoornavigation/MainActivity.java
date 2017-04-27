@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         mapView.currentPos = currentPos;
                         System.out.println(list_acc_magnitudes.size());
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
+                            /*
                             double[] newbase = new double[2];
                             newbase[0] = mapView.baseCurrentPosition[0] + mapView.currentPos[0];
                             newbase[1] = mapView.baseCurrentPosition[1] + mapView.currentPos[1];
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             System.out.println("Base is "+mapView.baseCurrentPosition[0]+","+mapView.baseCurrentPosition[1]);
                             list_acc_magnitudes.clear();
                             list_gyros.clear();
-                            list_bearings.clear();
+                            list_bearings.clear();*/
                         }
 
                         lastTimeProcessing = e.timestamp;

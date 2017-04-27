@@ -70,6 +70,7 @@ public class DataProcessing {
             }
             prevAcc = acc;
         }
+
         double[] pos =  new double[2];
         pos[0] = pos_x;
         pos[1] = pos_y;

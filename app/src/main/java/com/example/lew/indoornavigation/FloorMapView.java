@@ -37,8 +37,8 @@ public class FloorMapView extends View{
     private Bitmap map;
     private boolean resized = false;
 
-    public static double[] baseCurrentPosition;
-    public static double[] currentPos;
+    private double[] baseCurrentPosition;
+    public  static double[] currentPos;
     Paint paint = null;
     int[] pt1,pt2,pt3;
 
@@ -95,8 +95,9 @@ public class FloorMapView extends View{
             resized = true;
         }
 
-        int pos_x = (int) (baseCurrentPosition[0] + (int)currentPos[0]);
-        int pos_y = (int) (baseCurrentPosition[1] + (int)currentPos[1]);
+        int pos_x = (int)currentPos[0];
+        int pos_y = (int)currentPos[1];
+        //System.out.println(pos_x+","+pos_y);
 
         pt1[0] = pos_x - triangle_side_length/2;
         pt1[1] = pos_y - triangle_centre_height/2;
