@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.provider.ContactsContract;
 import android.view.View;
 
 /**
@@ -30,15 +29,14 @@ public class FloorMapView extends View{
     private int SCREEN_WIDTH;
     private int SCREEN_HEIGHT;
 
-    private int initial_pos_x = 4250; //initial coordinates in cm
-    private int initial_pos_y = 2000;
+    private int basePositionX = 4250; //initial coordinates in cm
+    private int basePositionY = 2000;
     private int triangle_side_length;
     private int triangle_centre_height;
     private Bitmap map;
     private boolean resized = false;
 
-    private double[] baseCurrentPosition;
-    public  static double[] currentPos;
+    private double[] currentPos;
     Paint paint = null;
     int[] pt1,pt2,pt3;
 
@@ -53,9 +51,6 @@ public class FloorMapView extends View{
         map = BitmapFactory.decodeResource(context.getResources(),
             R.drawable.map);
 
-        baseCurrentPosition = new double[2];
-        baseCurrentPosition[0] = 0.0;
-        baseCurrentPosition[1] = 0.0;
         currentPos = new double[2];
         currentPos[0] = 0.0;
         currentPos[1] = 0.0;
@@ -84,12 +79,12 @@ public class FloorMapView extends View{
                 wall_corners[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
                 System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
             }
-            initial_pos_x = (int) 1184.703472348348;
-            initial_pos_y = 775;
-            //initial_pos_x = (int) ((1/pixelTocm) * initial_pos_x);
-            //initial_pos_y = (int) ((1/pixelTocm) * initial_pos_y);
-            currentPos[0] = initial_pos_x;
-            currentPos[1] = initial_pos_y;
+            basePositionX = (int) 1184.703472348348;
+            basePositionY = 775;
+            //basePositionX = (int) ((1/pixelTocm) * basePositionX);
+            //basePositionY = (int) ((1/pixelTocm) * basePositionY);
+            currentPos[0] = basePositionX;
+            currentPos[1] = basePositionY;
             //DataProcessing.getFinalDestination(wall_corners,1333.6004347395194,804.0482048229254,1404.9484043996279,777.2917621337291);
             //DataProcessing.getIntersection(wall_corners[3][0],wall_corners[3][1],wall_corners[4][0],wall_corners[4][1],1200,1100,1400,1300);
             resized = true;
@@ -133,19 +128,20 @@ public class FloorMapView extends View{
         this.currentPos = currentPos;
     }
 
-    public double[] getBaseCurrentPosition() {
-        return baseCurrentPosition;
+    public int getBasePositionX() {
+        return basePositionX;
     }
 
-    public void setBaseCurrentPosition(double[] baseCurrentPosition) {
-        this.baseCurrentPosition = baseCurrentPosition;
+    public int getBasePositionY() {
+        return basePositionY;
     }
 
-    public int getInitial_pos_x() {
-        return initial_pos_x;
+    public void setBasePositionX(int basePositionX) {
+        this.basePositionX = basePositionX;
     }
 
-    public int getInitial_pos_y() {
-        return initial_pos_y;
+    public void setBasePositionY(int basePositionY) {
+        this.basePositionY = basePositionY;
     }
+
 }

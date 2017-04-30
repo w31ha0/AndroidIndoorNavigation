@@ -67,8 +67,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 case Sensor.TYPE_ACCELEROMETER:
                     if (currTime - lastTimeAccelerometer > Constants.DATA_SAMPLING_PERIOD) {
                         float[] acceleration = e.values;
+                        //System.out.println(acceleration[0]+","+acceleration[1]+","+acceleration[2]);
                         double acc_magnitude = Math.sqrt(acceleration[0] * acceleration[0] + acceleration[1] * acceleration[1] + acceleration[2] * acceleration[2]);;
-                        if (acc_magnitude < 1000 && acc_magnitude > 1) {
+                        if (acc_magnitude < 800 && acc_magnitude > 1) {
                             list_acc_magnitudes.add(acc_magnitude);
                             list_bearings.add(bearing);
                             this.currentAcceleration = acceleration;
@@ -77,24 +78,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     }
                     if (currTime - lastTimeProcessing > Constants.DATA_PROCESSING_PERIOD) {
                         double[] initialPos = new double[2];
-                        initialPos[0] = mapView.getInitial_pos_x();
-                        initialPos[1] = mapView.getInitial_pos_y();
+                        initialPos[0] = mapView.getBasePositionX();
+                        initialPos[1] = mapView.getBasePositionY();
                         System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
-                        mapView.currentPos = currentPos;
+                        mapView.setCurrentPos(currentPos);
                         System.out.println(list_acc_magnitudes.size());
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
-                            /*
-                            double[] newbase = new double[2];
-                            newbase[0] = mapView.baseCurrentPosition[0] + mapView.currentPos[0];
-                            newbase[1] = mapView.baseCurrentPosition[1] + mapView.currentPos[1];
-                            System.out.println("Setting new base to "+newbase[0]+","+newbase[1]);
-                            mapView.baseCurrentPosition = newbase;
-                            System.out.println("Base is "+mapView.baseCurrentPosition[0]+","+mapView.baseCurrentPosition[1]);
+                            mapView.setBasePositionX((int) currentPos[0]);
+                            mapView.setBasePositionY((int) currentPos[1]);
                             list_acc_magnitudes.clear();
                             list_gyros.clear();
-                            list_bearings.clear();*/
+                            list_bearings.clear();
                         }
 
                         lastTimeProcessing = e.timestamp;
