@@ -20,6 +20,10 @@
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_ratingbar_small_material.xml"
     },
     {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\map1.png",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\map1.png"
+    },
+    {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_switch_thumb_material.xml",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_switch_thumb_material.xml"
     },
@@ -58,10 +62,6 @@
     {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_dark.xml",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_item_background_holo_dark.xml"
-    },
-    {
-        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\map.png",
-        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\map.png"
     },
     {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_seekbar_thumb_material.xml",

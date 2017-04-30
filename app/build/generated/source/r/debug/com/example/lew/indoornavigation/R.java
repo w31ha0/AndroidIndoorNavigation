@@ -1611,7 +1611,7 @@ containing a value of this type.
         public static final int abc_textfield_search_activated_mtrl_alpha=0x7f020048;
         public static final int abc_textfield_search_default_mtrl_alpha=0x7f020049;
         public static final int abc_textfield_search_material=0x7f02004a;
-        public static final int map=0x7f02004b;
+        public static final int map1=0x7f02004b;
         public static final int map_original=0x7f02004c;
         public static final int map_scaled=0x7f02004d;
         public static final int nav=0x7f02004e;

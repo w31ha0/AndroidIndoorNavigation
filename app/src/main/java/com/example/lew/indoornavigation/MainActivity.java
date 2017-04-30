@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mapView = new FloorMapView(this);
+        MapTemplates template = new MapTemplates();
+        MapTemplates.Map1 map = template.new Map1();
+        mapView = new FloorMapView(this,map.getWall_corners_(),map.getWIDTH_MAP_(),map.getHEIGHT_MAP_(),map.getBasePositionX_(),map.getBasePositionY_(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
         setContentView(mapView);
 
         list_acc_magnitudes = new ArrayList<>();
@@ -80,11 +82,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         double[] initialPos = new double[2];
                         initialPos[0] = mapView.getBasePositionX();
                         initialPos[1] = mapView.getBasePositionY();
-                        System.out.println("Computing position");
+                        //System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
-                        System.out.println(list_acc_magnitudes.size());
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
                             mapView.setBasePositionX((int) currentPos[0]);
                             mapView.setBasePositionY((int) currentPos[1]);
