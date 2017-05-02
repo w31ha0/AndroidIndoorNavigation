@@ -1,2 +1,3 @@
-CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\MapTemplates$Map1$override.class
 CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\android\tools\fd\runtime\AppPatchesLoaderImpl.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\LoadingScreen$1$override.class
+CHANGED,C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\instantRun\debug\folders\4000\5\enhanced\com\example\lew\indoornavigation\LoadingScreen$override.class

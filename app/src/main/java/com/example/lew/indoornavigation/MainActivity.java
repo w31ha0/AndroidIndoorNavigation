@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MapTemplates template = new MapTemplates();
-        MapTemplates.Map1 map = template.new Map1();
+        String UUID = getIntent().getExtras().getString("Map");
+        MapTemplates.Map1 map = (MapTemplates.Map1) BluetoothDatabase.getMapFromUUID(UUID);
         mapView = new FloorMapView(this,map.getWall_corners_(),map.getWIDTH_MAP_(),map.getHEIGHT_MAP_(),map.getBasePositionX_(),map.getBasePositionY_(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
         setContentView(mapView);
 
