@@ -68,6 +68,10 @@
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\abc_list_menu_item_radio.xml"
     },
     {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\layout\\metricscreen.xml",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\layout\\metricscreen.xml"
+    },
+    {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\layout\\support_simple_spinner_dropdown_item.xml"
     },

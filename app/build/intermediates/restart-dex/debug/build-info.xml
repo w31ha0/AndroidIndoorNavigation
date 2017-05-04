@@ -4,7 +4,7 @@
     api-level="23"
     density="xxxhdpi"
     format="7"
-    timestamp="47132926016535"
+    timestamp="11747967796352"
     token="-5317615870909893738" >
 
     <task
@@ -20,11 +20,16 @@
         name="verifier"
         duration="0" />
 
-    <build timestamp="47064013045134" >
+    <build timestamp="10577757672285" >
         <artifact
             location="C:\xampp\htdocs\IndoorNavigation\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
     </build>
-    <build timestamp="47132926016535" />
+    <build timestamp="11561198433356" >
+        <artifact
+            location="C:\xampp\htdocs\IndoorNavigation\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
+            type="DEX" />
+    </build>
+    <build timestamp="11747967796352" />
 
 </instant-run>

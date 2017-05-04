@@ -32,15 +32,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public static float bearing = 0f;
     public static float prevBearing = -1f;
+    private float savedHeight;
     private FloorMapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String UUID = getIntent().getExtras().getString("Map");
+        savedHeight = Float.valueOf(getIntent().getExtras().getString("height"));
+        System.out.println("Using height of "+savedHeight);
         MapTemplates.Map1 map = (MapTemplates.Map1) BluetoothDatabase.getMapFromUUID(UUID);
         mapView = new FloorMapView(this,map.getWall_corners_(),map.getWIDTH_MAP_(),map.getHEIGHT_MAP_(),map.getBasePositionX_(),map.getBasePositionY_(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
         setContentView(mapView);
+        Singleton.getInstance().setMapLoaded(true);
 
         list_acc_magnitudes = new ArrayList<>();
         list_bearings = new ArrayList<>();
@@ -83,10 +87,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         initialPos[0] = mapView.getBasePositionX();
                         initialPos[1] = mapView.getBasePositionY();
                         //System.out.println("Computing position");
-                        double[] currentPos = DataProcessing.computeCurrentPosition(mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
+                        double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
+                            System.out.println("Clearing lists");
                             mapView.setBasePositionX((int) currentPos[0]);
                             mapView.setBasePositionY((int) currentPos[1]);
                             list_acc_magnitudes.clear();

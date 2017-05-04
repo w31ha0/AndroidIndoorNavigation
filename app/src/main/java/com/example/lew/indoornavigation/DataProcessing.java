@@ -22,7 +22,7 @@ public class DataProcessing {
 
     private static final String DATA_FILE_NAME = "File.txt";
 
-    public static double[] computeCurrentPosition(int[][] walls,double[] initialPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
+    public static double[] computeCurrentPosition(float savedHeight,int[][] walls,double[] initialPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
         double prevAcc = 0;
         boolean increasing = false;
         int windowSize = 0;
@@ -31,7 +31,7 @@ public class DataProcessing {
         boolean first = true;
         double pos_x = initialPos[0];
         double pos_y = initialPos[1];
-        double stride_length = 76.2;
+        double stride_length = savedHeight * 0.3;
 
         ArrayList<Double> processed_values = processRawAcceleration(acc_magnitudes);
         int index = -1;
@@ -58,7 +58,7 @@ public class DataProcessing {
                         double bearing = bearings.get(index);
                         double raw_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
                         double raw_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
-                        System.out.println("Getting final destination from "+pos_x+","+pos_y+" to "+raw_x+","+raw_y+" at an angle of "+bearing+" with index "+index+" with list size "+acc_magnitudes.size());
+                        //System.out.println("Getting final destination from "+pos_x+","+pos_y+" to "+raw_x+","+raw_y+" at an angle of "+bearing+" with index "+index+" with list size "+acc_magnitudes.size());
                         double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
                         pos_x = result[0];
                         pos_y = result[1];

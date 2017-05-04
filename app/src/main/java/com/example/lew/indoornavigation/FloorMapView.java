@@ -83,8 +83,6 @@ public class FloorMapView extends View{
 
         canvas.drawBitmap(map,0,0,paint);
         canvas.drawPath(path, paint);
-        paint.setTextSize(200);
-        canvas.drawText(String.valueOf((int) MainActivity.bearing),100,300,paint);
 
         invalidate();
 
