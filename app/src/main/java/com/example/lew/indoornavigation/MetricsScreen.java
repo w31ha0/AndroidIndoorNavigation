@@ -44,8 +44,8 @@ public class MetricsScreen extends Activity {
         });
 
         SharedPreferences prefs = getSharedPreferences(Constants.HEIGHT_PREFERENCES, MODE_PRIVATE);
-        String savedHeight = prefs.getString(Constants.HEIGHT_STRING, null);
-        if (savedHeight != null){
+        float savedHeight = Float.parseFloat(prefs.getString(Constants.HEIGHT_STRING,null));
+        if (savedHeight != 0f){
             Intent intent = new Intent(MetricsScreen.this, LoadingScreen.class);
             intent.putExtra("height",savedHeight);
             startActivity(intent);
@@ -54,14 +54,14 @@ public class MetricsScreen extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String savedHeight = height.getText().toString();
-                if (savedHeight.isEmpty()){
+                if (height.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(), Constants.WARNING, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                float savedHeight = Float.parseFloat(height.getText().toString());
 
                 SharedPreferences.Editor editor = getSharedPreferences(Constants.HEIGHT_PREFERENCES, MODE_PRIVATE).edit();
-                editor.putString(Constants.HEIGHT_STRING, savedHeight);
+                editor.putFloat(Constants.HEIGHT_STRING, savedHeight);
                 editor.commit();
 
                 Intent intent = new Intent(MetricsScreen.this, LoadingScreen.class);
@@ -70,4 +70,11 @@ public class MetricsScreen extends Activity {
             }
         });
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
 }

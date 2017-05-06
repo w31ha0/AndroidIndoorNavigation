@@ -1,5 +1,6 @@
 package com.example.lew.indoornavigation;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,15 @@ public class Utils {
 
         float[] results = {x1r,y1r,x2r,y2r,x3r,y3r};
         return results;
+    }
+
+    public static float getAverage(ArrayList<Float> list){
+        float sum = 0f;
+        float size = list.size();
+        for (float value:list){
+            sum += value;
+        }
+        return sum/size;
     }
 
     public double getMax(ArrayList<Double> list){

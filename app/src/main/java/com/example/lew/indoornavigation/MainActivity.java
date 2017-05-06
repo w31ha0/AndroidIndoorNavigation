@@ -2,6 +2,7 @@ package com.example.lew.indoornavigation;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,12 +20,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long lastTimeAccelerometer = 0;
     private long lastTimeProcessing = 0;
     private long lastTimeMagnetic = 0;
+    private float basePressure = 0f;
+    private String UUID;
+    private int floor;
 
     private float[] currentAcceleration;
     private float[] currentMagnetic;
     private float[] currentGyro;
     private boolean haveMagneticData = false;
     private boolean stoppedPitching = true;
+    private ArrayList<Float> bases;
 
     private ArrayList<Double> list_acc_magnitudes;
     private ArrayList<Double> list_gyros;
@@ -32,23 +37,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     public static float bearing = 0f;
     public static float prevBearing = -1f;
+    public static float pressure;
+    public static float base;
     private float savedHeight;
     private FloorMapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String UUID = getIntent().getExtras().getString("Map");
-        savedHeight = Float.valueOf(getIntent().getExtras().getString("height"));
+        UUID = getIntent().getExtras().getString("Map");
+        savedHeight = getIntent().getExtras().getFloat("height");
         System.out.println("Using height of "+savedHeight);
-        MapTemplates.Map1 map = (MapTemplates.Map1) BluetoothDatabase.getMapFromUUID(UUID);
-        mapView = new FloorMapView(this,map.getWall_corners_(),map.getWIDTH_MAP_(),map.getHEIGHT_MAP_(),map.getBasePositionX_(),map.getBasePositionY_(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
+        System.out.println("Bundle is "+getIntent().getExtras().getInt("Floor"));
+        this.floor = getIntent().getExtras().getInt("Floor");
+        IndoorMap map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor);
+        mapView = new FloorMapView(this,map.getWall_corners(),map.getWIDTH_MAP(),map.getHEIGHT_MAP(),map.getBasePositionX(),map.getBasePositionY(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
         setContentView(mapView);
         Singleton.getInstance().setMapLoaded(true);
 
         list_acc_magnitudes = new ArrayList<>();
         list_bearings = new ArrayList<>();
         list_gyros = new ArrayList<>();
+        bases = new ArrayList<>();
 
         currentGyro = new float[3];
         currentMagnetic = new float[3];
@@ -69,6 +79,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         lastTimeGyro = e.timestamp;
                     }
                 case Sensor.TYPE_PRESSURE:
+                    if (Math.abs(e.values[0]) < 100)
+                        return;
+                    if (bases.size() < Constants.PRESSURE_LIST_SIZE) {
+                        bases.add(e.values[0]);
+                        return;
+                    }
+                    pressure = Math.abs(e.values[0]);
+                    base = basePressure;
+                    float averagePressure = Utils.getAverage(bases);
+                    System.out.println("Difference is "+(pressure - averagePressure)+" as base is "+averagePressure+" and current is "+pressure);
+                    if ( pressure - averagePressure > Constants.FLOOR_PRESSURE_DIFFERENCE){
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtra("Map", UUID);
+                        intent.putExtra("Floor",this.floor-1);
+                        intent.putExtra("height", savedHeight);
+                        startActivity(intent);
+                        bases.clear();
+                        finish();
+                    }
+                    else if ( averagePressure - pressure > Constants.FLOOR_PRESSURE_DIFFERENCE ){
+                        System.out.println("Transiting to next level");
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtra("Map", UUID);
+                        intent.putExtra("Floor",this.floor+1);
+                        intent.putExtra("height", savedHeight);
+                        startActivity(intent);
+                        bases.clear();
+                        finish();
+                    }
                     //pressure_tv.setText("Pressure: " + String.valueOf(e.values[0]));
                 case Sensor.TYPE_ACCELEROMETER:
                     if (currTime - lastTimeAccelerometer > Constants.DATA_SAMPLING_PERIOD) {

@@ -12,4 +12,7 @@ public class Constants {
     public static final String HEIGHT_PREFERENCES = "height";
     public static final String HEIGHT_STRING = "height";
     public static final String WARNING = "Please enter a value for your height!";
+    public static final float FLOOR_PRESSURE_DIFFERENCE = 0.15f;
+    public static final int PRESSURE_LIST_SIZE = 40;
+
 }

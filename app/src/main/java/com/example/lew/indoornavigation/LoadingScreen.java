@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.RemoteException;
 import android.widget.TextView;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -20,7 +19,7 @@ import org.altbeacon.beacon.Region;
 public class LoadingScreen extends Activity implements BeaconConsumer {
     private BeaconManager manager;
     private TextView status;
-    private String savedHeight;
+    private float savedHeight;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
     @Override
@@ -28,7 +27,7 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
         super.onCreate(savedInstanceState);
         System.out.println("Loading Scanning Screen");
         Singleton.getInstance().setMapLoaded(false);
-        savedHeight = getIntent().getExtras().getString("height");
+        savedHeight = getIntent().getExtras().getFloat("height");
         setContentView(R.layout.mainscreen);
         status = (TextView)findViewById(R.id.status);
         manager = BeaconManager.getInstanceForApplication(this);
@@ -88,7 +87,7 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
                 if (state == 1){
                     System.out.println("Entered");
                     String UUID = String.valueOf(region.getId1());
-                    IndoorMap map = BluetoothDatabase.getMapFromUUID(UUID);
+                    IndoorMap map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,0);
                     if (map == null)
                         //status.setText("Invalid UUID Detected");
                         map = map;
@@ -105,7 +104,9 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
                         }
                         Intent intent = new Intent(LoadingScreen.this, MainActivity.class);
                         intent.putExtra("Map", UUID);
+                        intent.putExtra("Floor",0);
                         intent.putExtra("height", savedHeight);
+                        System.out.println("height is "+savedHeight);
                         startActivity(intent);
                     }
                 }
