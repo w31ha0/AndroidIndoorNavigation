@@ -2,12 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:background="@drawable/bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.DoubleBounce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="#4CFF00"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Locating nearby Beacon..."
         android:id="@+id/status"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="83dp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/spin_kit"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

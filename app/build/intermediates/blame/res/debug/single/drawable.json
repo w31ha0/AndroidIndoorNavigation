@@ -40,6 +40,10 @@
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_item_background_holo_light.xml"
     },
     {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bg.png",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\bg.png"
+    },
+    {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\map_scaled.png",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\map_scaled.png"
     },
@@ -76,6 +80,10 @@
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_list_selector_holo_dark.xml"
     },
     {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\gobutton.xml",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\gobutton.xml"
+    },
+    {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_dialog_material_background_dark.xml",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_dialog_material_background_dark.xml"
     },
@@ -84,8 +92,16 @@
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\map2.png"
     },
     {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\scan.gif",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\scan.gif"
+    },
+    {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_spinner_textfield_background_material.xml",
         "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.4.0\\res\\drawable\\abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\textinputborder.xml",
+        "source": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\src\\main\\res\\drawable\\textinputborder.xml"
     },
     {
         "merged": "C:\\xampp\\htdocs\\IndoorNavigation\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_edit_text_material.xml",

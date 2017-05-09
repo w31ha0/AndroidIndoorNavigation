@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,37 +20,54 @@ import android.widget.Toast;
 public class MetricsScreen extends Activity {
     private EditText height;
     private Button button;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Typeface fontRobo = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/cool.ttf");
         setContentView(R.layout.metricscreen);
         height = (EditText)findViewById(R.id.height);
         button = (Button)findViewById(R.id.save);
+        title=(TextView)findViewById(R.id.title);
+
+        title.setTypeface(fontRobo);
+
+        height.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == height.getId())
+                {
+                    height.setCursorVisible(true);
+                    height.setText("");
+                }
+            }
+        });
 
         height.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == 0) {
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    height.setFocusable(false);
-                    height.setFocusableInTouchMode(true);
-                    return true;
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                height.setCursorVisible(false);
+                if (event != null&& (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(height.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
                 }
                 return false;
             }
         });
 
         SharedPreferences prefs = getSharedPreferences(Constants.HEIGHT_PREFERENCES, MODE_PRIVATE);
-        float savedHeight = Float.parseFloat(prefs.getString(Constants.HEIGHT_STRING,null));
-        if (savedHeight != 0f){
-            Intent intent = new Intent(MetricsScreen.this, LoadingScreen.class);
-            intent.putExtra("height",savedHeight);
-            startActivity(intent);
+        float str = prefs.getFloat(Constants.HEIGHT_STRING,0f);
+        if (str != 0f) {
+            float savedHeight = str;
+            if (savedHeight != 0f) {
+                Intent intent = new Intent(MetricsScreen.this, LoadingScreen.class);
+                intent.putExtra("height", savedHeight);
+                startActivity(intent);
+            }
         }
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,31 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:background="@drawable/bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
     <TextView
+        android:layout_marginTop="100dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Please enter your height in cm"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="131dp" />
+        android:text="The Navigator"
+        android:id="@+id/title"
+        android:layout_above="@+id/height"
+        android:textColor="#FFFFFF"
+        android:textSize="70dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:layout_alignEnd="@+id/height"
+        android:layout_alignStart="@+id/height" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/height"
+        android:cursorVisible="false"
+        android:maxLines="1"
+        android:inputType="number"
+        android:text="Input your height in cm"
+        android:background="@drawable/textinputborder"
+        android:padding="10dp"
+        android:textColor="#808080"
         android:imeOptions="actionDone"
         android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Go"
+        android:background="@drawable/gobutton"
+        android:textColor="#FFFFFF"
         android:id="@+id/save"
         android:layout_below="@+id/height"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="88dp" />
+        android:layout_marginTop="30dp" />
+
 </RelativeLayout>
