@@ -1652,13 +1652,16 @@ containing a value of this type.
         public static final int abc_textfield_search_material=0x7f02004a;
         public static final int bg=0x7f02004b;
         public static final int gobutton=0x7f02004c;
-        public static final int map1=0x7f02004d;
-        public static final int map2=0x7f02004e;
-        public static final int map_scaled=0x7f02004f;
-        public static final int nav=0x7f020050;
-        public static final int notification_template_icon_bg=0x7f020053;
-        public static final int scan=0x7f020051;
-        public static final int textinputborder=0x7f020052;
+        public static final int map0=0x7f02004d;
+        public static final int map1=0x7f02004e;
+        public static final int map2=0x7f02004f;
+        public static final int map4=0x7f020050;
+        public static final int map5=0x7f020051;
+        public static final int map_scaled=0x7f020052;
+        public static final int nav=0x7f020053;
+        public static final int notification_template_icon_bg=0x7f020056;
+        public static final int scan=0x7f020054;
+        public static final int textinputborder=0x7f020055;
     }
     public static final class id {
         public static final int ChasingDots=0x7f0c0021;

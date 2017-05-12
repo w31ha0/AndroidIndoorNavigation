@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
@@ -87,7 +89,8 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
                 if (state == 1){
                     System.out.println("Entered");
                     String UUID = String.valueOf(region.getId1());
-                    IndoorMap map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,0);
+                    int floor = 5;
+                    IndoorMap map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,floor);
                     if (map == null)
                         //status.setText("Invalid UUID Detected");
                         map = map;
@@ -104,7 +107,7 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
                         }
                         Intent intent = new Intent(LoadingScreen.this, MainActivity.class);
                         intent.putExtra("Map", UUID);
-                        intent.putExtra("Floor",0);
+                        intent.putExtra("Floor",floor);
                         intent.putExtra("height", savedHeight);
                         System.out.println("height is "+savedHeight);
                         startActivity(intent);
@@ -117,6 +120,16 @@ public class LoadingScreen extends Activity implements BeaconConsumer {
             manager.startMonitoringBeaconsInRegion(new Region("myBeacons",Identifier.parse("E6BF275E-0BB3-43E5-BF88-517F13A5A162"), null, null));
         } catch (RemoteException e) {
             status.setText("Error occured "+e);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length >= 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                // permission wasn't granted
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.net.wifi.WifiManager;
 import android.view.View;
 
 /**
@@ -14,7 +15,8 @@ import android.view.View;
  */
 public class FloorMapView extends View{
 
-    private int[][] wall_corners;
+    private int[][][] allWalls;
+    private int[][] waps;
     private int WIDTH_MAP;
     private int HEIGHT_MAP;
     private int SCREEN_WIDTH;
@@ -32,10 +34,11 @@ public class FloorMapView extends View{
     private Paint paint = null;
     private int[] triangle_pt1, triangle_pt2, triangle_pt3;
 
-    public FloorMapView(Context context,int[][] wall_corners,int WIDTH_MAP,int HEIGHT_MAP,int basePositionX,int basePositionY,int iconSizecm,float pixelTocm,int drawable)
+    public FloorMapView(Context context,int[][][] allWalls,int waps[][],int WIDTH_MAP,int HEIGHT_MAP,int basePositionX,int basePositionY,int iconSizecm,float pixelTocm,int drawable)
     {
         super(context);
-        this.wall_corners = wall_corners;
+        this.allWalls = allWalls;
+        this.waps = waps;
         this.WIDTH_MAP = WIDTH_MAP;
         this.HEIGHT_MAP = HEIGHT_MAP;
         this.basePositionX = basePositionX;
@@ -83,9 +86,9 @@ public class FloorMapView extends View{
 
         canvas.drawBitmap(map,0,0,paint);
         canvas.drawPath(path, paint);
-        paint.setTextSize(100);
-        canvas.drawText("Current:"+String.valueOf(MainActivity.pressure),200,200,paint);
-        canvas.drawText("Base:"+String.valueOf(MainActivity.base),200,300,paint);
+        paint.setTextSize(70);
+        canvas.drawText("RSSI:"+String.valueOf(MainActivity.rssi),200,200,paint);
+        canvas.drawText("PRESSURE:"+String.valueOf(MainActivity.pressure),200,300,paint);
 
         invalidate();
 
@@ -108,12 +111,21 @@ public class FloorMapView extends View{
         basePositionX = (int) (basePositionX * 1/scaleX);
         basePositionY = SCREEN_HEIGHT - (int)(basePositionY * 1/scaleY);
 
-        for (int i=0;i<wall_corners.length;i++){
-            int[] pt = wall_corners[i];
-            wall_corners[i][0] = (int) (pt[0]*(1/scaleX));
-            wall_corners[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
-            System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
+        for (int[][] wall_corners:allWalls)
+            for (int i=0;i<wall_corners.length;i++){
+                int[] pt = wall_corners[i];
+                wall_corners[i][0] = (int) (pt[0]*(1/scaleX));
+                wall_corners[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
+                System.out.println("Wall scaled to "+wall_corners[i][0]+","+wall_corners[i][1]);
+            }
+
+        for (int i=0;i<waps.length;i++){
+            int[] pt = waps[i];
+            waps[i][0] = (int) (pt[0]*(1/scaleX));
+            waps[i][1] = (int) (SCREEN_HEIGHT - pt[1]*(1/scaleY));
+            System.out.println("WAP scaled to "+waps[i][0]+","+waps[i][1]);
         }
+
         currentPos[0] = basePositionX;
         currentPos[1] = basePositionY;
         //DataProcessing.getFinalDestination(wall_corners,1333.6004347395194,804.0482048229254,1404.9484043996279,777.2917621337291);
@@ -121,8 +133,8 @@ public class FloorMapView extends View{
         resized = true;
     }
 
-    public int[][] getWall_corners(){
-        return wall_corners;
+    public int[][][] getAllWalls(){
+        return allWalls;
     }
 
     public double[] getCurrentPos() {

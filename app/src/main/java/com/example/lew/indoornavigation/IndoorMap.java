@@ -5,7 +5,8 @@ package com.example.lew.indoornavigation;
  */
 public class IndoorMap {
 
-    private int[][] wall_corners;
+    private int[][][] allWalls;
+    private int[][] waps;
     private int WIDTH_MAP;
     private int HEIGHT_MAP;
     private int basePositionX;
@@ -15,6 +16,23 @@ public class IndoorMap {
     private int drawable;
     private int building_id;
     private int floor;
+    private float initialBearing;
+
+    public float getInitialBearing() {
+        return initialBearing;
+    }
+
+    public void setInitialBearing(float initialBearing) {
+        this.initialBearing = initialBearing;
+    }
+
+    public int[][] getWaps() {
+        return waps;
+    }
+
+    public void setWaps(int[][] waps) {
+        this.waps = waps;
+    }
 
     public int getWIDTH_MAP() {
         return WIDTH_MAP;
@@ -24,12 +42,12 @@ public class IndoorMap {
         this.WIDTH_MAP = WIDTH_MAP;
     }
 
-    public int[][] getWall_corners() {
-        return wall_corners;
+    public int[][][] getAllWalls() {
+        return allWalls;
     }
 
-    public void setWall_corners(int[][] wall_corners) {
-        this.wall_corners = wall_corners;
+    public void setAllWalls(int[][][] allWalls) {
+        this.allWalls = allWalls;
     }
 
     public int getHEIGHT_MAP() {

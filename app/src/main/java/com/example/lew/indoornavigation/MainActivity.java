@@ -1,6 +1,8 @@
 package com.example.lew.indoornavigation;
 
+import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,7 +10,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float basePressure = 0f;
     private String UUID;
     private int floor;
+    private WifiManager wifiManager;
 
     private float[] currentAcceleration;
     private float[] currentMagnetic;
@@ -34,37 +39,48 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private ArrayList<Double> list_acc_magnitudes;
     private ArrayList<Double> list_gyros;
     private ArrayList<Float> list_bearings;
+    private ArrayList<Integer> list_rssi;
 
     public static float bearing = 0f;
     public static float prevBearing = -1f;
     public static float pressure;
     public static float base;
+    public static int rssi;
+    public static String mac;
     private float savedHeight;
     private FloorMapView mapView;
+    private IndoorMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         UUID = getIntent().getExtras().getString("Map");
         savedHeight = getIntent().getExtras().getFloat("height");
         System.out.println("Using height of "+savedHeight);
         System.out.println("Bundle is "+getIntent().getExtras().getInt("Floor"));
         this.floor = getIntent().getExtras().getInt("Floor");
-        IndoorMap map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor);
-        mapView = new FloorMapView(this,map.getWall_corners(),map.getWIDTH_MAP(),map.getHEIGHT_MAP(),map.getBasePositionX(),map.getBasePositionY(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
+        map = BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor);
+        System.out.println("Getting floor "+this.floor);
+        mapView = new FloorMapView(this,map.getAllWalls(),map.getWaps(),map.getWIDTH_MAP(),map.getHEIGHT_MAP(),map.getBasePositionX(),map.getBasePositionY(),map.getIconSizecm(),map.getPixelTocm(),map.getDrawable());
         setContentView(mapView);
         Singleton.getInstance().setMapLoaded(true);
+        MainActivity.bearing = map.getInitialBearing();
 
-        list_acc_magnitudes = new ArrayList<>();
+
+                list_acc_magnitudes = new ArrayList<>();
         list_bearings = new ArrayList<>();
         list_gyros = new ArrayList<>();
         bases = new ArrayList<>();
+        list_rssi = new ArrayList<>();
 
         currentGyro = new float[3];
         currentMagnetic = new float[3];
         currentAcceleration = new float[3];
 
         RegisterListeners();
+
+        //verifyStoragePermissions(this);
     }
 
         @Override
@@ -90,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     float averagePressure = Utils.getAverage(bases);
                     System.out.println("Difference is "+(pressure - averagePressure)+" as base is "+averagePressure+" and current is "+pressure);
                     if ( pressure - averagePressure > Constants.FLOOR_PRESSURE_DIFFERENCE){
+                        if (BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor-1) == null)
+                            return;
                         Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         intent.putExtra("Map", UUID);
                         intent.putExtra("Floor",this.floor-1);
@@ -99,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         finish();
                     }
                     else if ( averagePressure - pressure > Constants.FLOOR_PRESSURE_DIFFERENCE ){
+                        if (BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor+1) == null)
+                            return;
                         System.out.println("Transiting to next level");
                         Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         intent.putExtra("Map", UUID);
@@ -115,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         //System.out.println(acceleration[0]+","+acceleration[1]+","+acceleration[2]);
                         double acc_magnitude = Math.sqrt(acceleration[0] * acceleration[0] + acceleration[1] * acceleration[1] + acceleration[2] * acceleration[2]);;
                         if (acc_magnitude < 800 && acc_magnitude > 1) {
+                            int rssi = wifiManager.getConnectionInfo().getRssi();
+                            MainActivity.rssi = rssi;
+                            list_rssi.add(rssi);
                             list_acc_magnitudes.add(acc_magnitude);
                             list_bearings.add(bearing);
                             this.currentAcceleration = acceleration;
@@ -126,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         initialPos[0] = mapView.getBasePositionX();
                         initialPos[1] = mapView.getBasePositionY();
                         //System.out.println("Computing position");
-                        double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getWall_corners(),initialPos, list_gyros, list_acc_magnitudes, list_bearings);
+                        double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getAllWalls(),initialPos, list_gyros, list_acc_magnitudes, list_bearings,list_rssi,map.getWaps());
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
@@ -136,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                             list_acc_magnitudes.clear();
                             list_gyros.clear();
                             list_bearings.clear();
+                            list_rssi.clear();
                         }
 
                         lastTimeProcessing = e.timestamp;
@@ -219,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DataProcessing.saveDataToExcel(list_rssi);
         UnregisterListeners();
     }
 
@@ -231,6 +256,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             } else {
                 // permission wasn't granted
             }
+        }
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    1
+            );
         }
     }
 

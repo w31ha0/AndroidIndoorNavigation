@@ -22,7 +22,7 @@ public class DataProcessing {
 
     private static final String DATA_FILE_NAME = "File.txt";
 
-    public static double[] computeCurrentPosition(float savedHeight,int[][] walls,double[] initialPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings){
+    public static double[] computeCurrentPosition(float savedHeight,int[][][] walls,double[] initialPos, ArrayList<Double> gyros, ArrayList<Double> acc_magnitudes, ArrayList<Float> bearings,ArrayList<Integer> list_rssi,int[][] waps){
         double prevAcc = 0;
         boolean increasing = false;
         int windowSize = 0;
@@ -62,6 +62,15 @@ public class DataProcessing {
                         double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
                         pos_x = result[0];
                         pos_y = result[1];
+                        int rssi = list_rssi.get(index);
+                        System.out.println("RSSI: "+rssi);
+                        if (rssi >= Constants.WAP_MAX_RSSI){
+                            int[] wifiCorrected = getClosestWAP(pos_x,pos_y,waps);
+                            pos_x = wifiCorrected[0];
+                            pos_y = wifiCorrected[1];
+                            System.out.println("Correcting wifi position to "+pos_x+","+pos_y);
+                        }
+
 
                         //System.out.println("Step detected at "+accIndex);
                     }
@@ -70,32 +79,37 @@ public class DataProcessing {
             }
             prevAcc = acc;
         }
-
         double[] pos =  new double[2];
         pos[0] = pos_x;
         pos[1] = pos_y;
         return pos;
     }
 
-    public static double[] getFinalDestination(int[][] walls, double x1, double y1, double x2, double y2){
-        double[] finalPosition = new double[2];
+    public static double[] getFinalDestination(int[][][] allWalls, double x1, double y1, double x2, double y2){
+        double[] finalPosition = new double[3];
         double  lowestDistance = 1000;
-        for(int i=0;i<walls.length;i++){
-            int[] pt1 = { walls[i][0],walls[i][1]};
-            int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
-            double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
-            //System.out.println("Possible intersection at "+result[0]+","+result[1]);
-            if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1]) //to make sure intersection is in the right direction
-                    && Utils.isBetween(pt1[0],pt2[0],result[0]) && Utils.isBetween(pt1[1],pt2[1],result[1])){ //to make sure it coincides with wall
-                System.out.println("Collision detected at "+result[0]+","+result[1]);
-                finalPosition[0] = result[0]-0.01*(result[0] - x1);
-                finalPosition[1] = result[1]-0.01*(result[1] - y1);
-                return finalPosition;
-            }else{
-                finalPosition[0] = x2;
-                finalPosition[1] = y2;
+        for (int[][] walls : allWalls)
+            for(int i=0;i<walls.length;i++){
+                int[] pt1 = { walls[i][0],walls[i][1]};
+                int[] pt2 = { walls[(i+1)%walls.length][0],walls[(i+1)%walls.length][1] };
+                double[] result = getIntersection(pt1[0],pt1[1],pt2[0],pt2[1],x1,y1,x2,y2);
+                //System.out.println("Possible intersection at "+result[0]+","+result[1]);
+                if(Utils.isBetween(x1,x2,result[0]) && Utils.isBetween(y1,y2,result[1]) //to make sure intersection is in the right direction
+                        && Utils.isBetween(pt1[0],pt2[0],result[0]) && Utils.isBetween(pt1[1],pt2[1],result[1])){ //to make sure it coincides with wall
+                    System.out.println("Collision detected at "+result[0]+","+result[1]);
+                    finalPosition[0] = result[0]-0.01*(result[0] - x1);
+                    finalPosition[1] = result[1]-0.01*(result[1] - y1);
+                    if (pt1[0] == pt2[0])
+                        finalPosition[2] = 1;
+                    else if (pt1[1] == pt2[1])
+                        finalPosition[2] = 0;
+                    return finalPosition;
+                }else{
+                    finalPosition[0] = x2;
+                    finalPosition[1] = y2;
+                    finalPosition[2] = -1;
+                }
             }
-        }
         //System.out.println("Nesult is "+finalPosition[0]+","+finalPosition[1]);
         return finalPosition;
     }
@@ -195,7 +209,7 @@ public class DataProcessing {
         return false;
     }
 
-    private static void saveDataToExcel(ArrayList<Double> list){
+    public static void saveDataToExcel(ArrayList<Integer> list){
         try {
             BufferedWriter fos = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() +"/"+DATA_FILE_NAME));
             for (int i=0;i<list.size();i++){
@@ -209,4 +223,19 @@ public class DataProcessing {
             System.out.println(e);
         }
     }
+
+    private static int[] getClosestWAP(double x,double y,int[][] waps){
+        double lowestDistance = 10000000;
+        int[] closestWAP = new int[2];
+        for (int[] wap:waps){
+             double distance = Math.sqrt( (x-wap[0])*(x-wap[0]) + (y-wap[1])*(y-wap[1]) );
+            if (distance < lowestDistance){
+                lowestDistance = distance;
+                closestWAP[0] = wap[0];
+                closestWAP[1] = wap[1];
+            }
+        }
+        return closestWAP;
+    }
+
 }
