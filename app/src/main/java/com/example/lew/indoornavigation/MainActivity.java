@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean haveMagneticData = false;
     private boolean stoppedPitching = true;
     private ArrayList<Float> bases;
+    private float bearingAdjustment;
 
     private ArrayList<Double> list_acc_magnitudes;
     private ArrayList<Double> list_gyros;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         MainActivity.bearing = map.getInitialBearing();
 
 
-                list_acc_magnitudes = new ArrayList<>();
+        list_acc_magnitudes = new ArrayList<>();
         list_bearings = new ArrayList<>();
         list_gyros = new ArrayList<>();
         bases = new ArrayList<>();
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentGyro = new float[3];
         currentMagnetic = new float[3];
         currentAcceleration = new float[3];
+        bearingAdjustment = 0;
 
         RegisterListeners();
 
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     pressure = Math.abs(e.values[0]);
                     base = basePressure;
                     float averagePressure = Utils.getAverage(bases);
-                    System.out.println("Difference is "+(pressure - averagePressure)+" as base is "+averagePressure+" and current is "+pressure);
+                    //System.out.println("Difference is "+(pressure - averagePressure)+" as base is "+averagePressure+" and current is "+pressure);
                     if ( pressure - averagePressure > Constants.FLOOR_PRESSURE_DIFFERENCE){
                         if (BluetoothDatabase.getMapFromUUIDAndFloor(UUID,this.floor-1) == null)
                             return;
@@ -148,11 +150,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         double[] initialPos = new double[2];
                         initialPos[0] = mapView.getBasePositionX();
                         initialPos[1] = mapView.getBasePositionY();
-                        //System.out.println("Computing position");
+                        System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getAllWalls(),initialPos, list_gyros, list_acc_magnitudes, list_bearings,list_rssi,map.getWaps());
+                        if (Math.abs(bearingAdjustment)<45)
+                            bearingAdjustment = (float) currentPos[2];
+                        System.out.println("Bearing adjustment is "+bearingAdjustment);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
-                        if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST){
+                        if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST ){
                             System.out.println("Clearing lists");
                             mapView.setBasePositionX((int) currentPos[0]);
                             mapView.setBasePositionY((int) currentPos[1]);
@@ -186,9 +191,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (prevBearing == -1f)
                     prevBearing = yaw;
                 else {
+                    yaw = yaw + bearingAdjustment;
                     float change = yaw - prevBearing;
                     prevBearing = yaw;
-                    bearing += change;
+                    bearing = (bearing + change);
+                    if (bearing < 0)
+                        bearing += 360;
                 }
                 lastTimeMagnetic = currTime;
                 haveMagneticData = false;

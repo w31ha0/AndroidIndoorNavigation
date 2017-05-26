@@ -32,6 +32,8 @@ public class DataProcessing {
         double pos_x = initialPos[0];
         double pos_y = initialPos[1];
         double stride_length = savedHeight * 0.3;
+        double bearingAdjustment = 0;
+        double finalAdjustment = -1;
 
         ArrayList<Double> processed_values = processRawAcceleration(acc_magnitudes);
         int index = -1;
@@ -56,32 +58,54 @@ public class DataProcessing {
                         }
                         noOfPeaks++;
                         double bearing = bearings.get(index);
+                        bearing = bearing + bearingAdjustment;
                         double raw_x = pos_x + Math.sin(Math.toRadians(bearing))*stride_length;
                         double raw_y = pos_y + Math.cos(Math.toRadians(bearing))*stride_length;
-                        //System.out.println("Getting final destination from "+pos_x+","+pos_y+" to "+raw_x+","+raw_y+" at an angle of "+bearing+" with index "+index+" with list size "+acc_magnitudes.size());
+                        System.out.println("Getting final destination from "+pos_x+","+pos_y+" to "+raw_x+","+raw_y+" at an angle of "+bearing+" with index "+index+" with list size "+acc_magnitudes.size());
                         double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
                         pos_x = result[0];
                         pos_y = result[1];
-                        int rssi = list_rssi.get(index);
-                        System.out.println("RSSI: "+rssi);
-                        if (rssi >= Constants.WAP_MAX_RSSI){
-                            int[] wifiCorrected = getClosestWAP(pos_x,pos_y,waps);
-                            pos_x = wifiCorrected[0];
-                            pos_y = wifiCorrected[1];
-                            System.out.println("Correcting wifi position to "+pos_x+","+pos_y);
-                        }
 
+                        if (result[2] == 1) {
+                            if ( (bearing <= 90 && bearing >= 0) || (bearing <= 360 && bearing >= 270)) {
+                                finalAdjustment = 0 - bearing;
+                                bearingAdjustment += (0 - bearing);
+                            }
+                            else {
+                                finalAdjustment = 180 - bearing;
+                                bearingAdjustment += (180 - bearing);
+                            }
+                        }
+                        else if (result[2] == 0){
+                            if ( bearing <= 180 && bearing >= 0) {
+                                finalAdjustment = 90 - bearing;
+                                bearingAdjustment += (90 - bearing);
+                            }
+                            else {
+                                finalAdjustment = 270 - bearing;
+                                bearingAdjustment += (270 - bearing);
+                            }
+                        }else
+                            finalAdjustment = 0;
 
                         //System.out.println("Step detected at "+accIndex);
                     }
                     windowSize = 0;
                 }
             }
+            int rssi = list_rssi.get(index);
+            if (rssi >= Constants.WAP_MAX_RSSI){
+                int[] wifiCorrected = getClosestWAP(pos_x,pos_y,waps);
+                pos_x = wifiCorrected[0];
+                pos_y = wifiCorrected[1];
+                System.out.println("Correcting wifi position to "+pos_x+","+pos_y);
+            }
             prevAcc = acc;
         }
-        double[] pos =  new double[2];
+        double[] pos =  new double[3];
         pos[0] = pos_x;
         pos[1] = pos_y;
+        pos[2] = finalAdjustment;
         return pos;
     }
 

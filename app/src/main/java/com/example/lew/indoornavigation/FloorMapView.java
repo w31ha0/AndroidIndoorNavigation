@@ -87,8 +87,8 @@ public class FloorMapView extends View{
         canvas.drawBitmap(map,0,0,paint);
         canvas.drawPath(path, paint);
         paint.setTextSize(70);
-        canvas.drawText("RSSI:"+String.valueOf(MainActivity.rssi),200,200,paint);
-        canvas.drawText("PRESSURE:"+String.valueOf(MainActivity.pressure),200,300,paint);
+        //canvas.drawText("RSSI:"+String.valueOf(MainActivity.rssi),200,200,paint);
+        //canvas.drawText("Angle:"+String.valueOf(MainActivity.bearing),200,300,paint);
 
         invalidate();
 

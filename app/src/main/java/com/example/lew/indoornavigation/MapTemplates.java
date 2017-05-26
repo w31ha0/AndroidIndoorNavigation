@@ -103,14 +103,14 @@ public class MapTemplates{
             setWaps(waps);
             setWIDTH_MAP(1011);
             setHEIGHT_MAP(1010);
-            setBasePositionX(190);
-            setBasePositionY(882);
+            setBasePositionX(587);
+            setBasePositionY(193);
             setIconSizecm(75);
             setPixelTocm(1000/247);
             setDrawable(R.drawable.map5);
             setBuilding_id(0);
             setFloor(5);
-            setInitialBearing(-90);
+            setInitialBearing(270);
         }
     }
 
