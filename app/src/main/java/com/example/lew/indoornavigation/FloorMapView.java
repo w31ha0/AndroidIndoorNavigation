@@ -25,6 +25,7 @@ public class FloorMapView extends View{
     private int basePositionY;
     private int iconSizecm;
     private float pixelTocm;
+    private int currentZoom = 1;
 
     private int triangle_side_length;
     private int triangle_centre_height;
@@ -54,6 +55,16 @@ public class FloorMapView extends View{
         triangle_pt1 = new int[2];
         triangle_pt2 = new int[2];
         triangle_pt3 = new int[2];
+
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentZoom == 1)
+                    currentZoom = Constants.ZOOM_SCALE;
+                else if (currentZoom == Constants.ZOOM_SCALE)
+                    currentZoom = 1;
+            }
+        });
     }
 
     @Override
@@ -65,6 +76,11 @@ public class FloorMapView extends View{
 
         int pos_x = (int)currentPos[0];
         int pos_y = (int)currentPos[1];
+        canvas.scale(currentZoom,currentZoom);
+        if (currentZoom == Constants.ZOOM_SCALE)
+            canvas.translate(-(pos_x-SCREEN_WIDTH/(Constants.ZOOM_SCALE*2)),-(SCREEN_HEIGHT-pos_y-SCREEN_HEIGHT/(Constants.ZOOM_SCALE*2)));
+        else if (currentZoom == 1)
+            canvas.translate(0,0);
         //System.out.println(pos_x+","+pos_y);
 
         triangle_pt1[0] = pos_x - triangle_side_length/2;

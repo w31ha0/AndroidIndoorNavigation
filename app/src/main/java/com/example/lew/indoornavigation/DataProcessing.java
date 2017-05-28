@@ -71,7 +71,7 @@ public class DataProcessing {
                                 finalAdjustment = 0 - bearing;
                                 bearingAdjustment += (0 - bearing);
                             }
-                            else {
+                            else if (bearing <= 270 && bearing >= 90 ){
                                 finalAdjustment = 180 - bearing;
                                 bearingAdjustment += (180 - bearing);
                             }
@@ -81,7 +81,7 @@ public class DataProcessing {
                                 finalAdjustment = 90 - bearing;
                                 bearingAdjustment += (90 - bearing);
                             }
-                            else {
+                            else if (bearing >= 180 && bearing <= 360){
                                 finalAdjustment = 270 - bearing;
                                 bearingAdjustment += (270 - bearing);
                             }

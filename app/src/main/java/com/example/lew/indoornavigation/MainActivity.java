@@ -152,8 +152,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         initialPos[1] = mapView.getBasePositionY();
                         System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getAllWalls(),initialPos, list_gyros, list_acc_magnitudes, list_bearings,list_rssi,map.getWaps());
-                        if (Math.abs(bearingAdjustment)<45)
+                        if (Math.abs(bearingAdjustment) < Constants.BEARING_ADJUSTMENT_TOLERANCE) {
                             bearingAdjustment = (float) currentPos[2];
+                            System.out.println("Bearing adjustment is "+bearingAdjustment+" while bearing is "+bearing);
+                        }
                         System.out.println("Bearing adjustment is "+bearingAdjustment);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
