@@ -65,28 +65,24 @@ public class DataProcessing {
                         double[] result = getFinalDestination(walls,pos_x,pos_y,raw_x,raw_y);
                         pos_x = result[0];
                         pos_y = result[1];
+                        finalAdjustment = result[2];
 
                         if (result[2] == 1) {
                             if ( (bearing <= 90 && bearing >= 0) || (bearing <= 360 && bearing >= 270)) {
-                                finalAdjustment = 0 - bearing;
                                 bearingAdjustment += (0 - bearing);
                             }
                             else if (bearing <= 270 && bearing >= 90 ){
-                                finalAdjustment = 180 - bearing;
                                 bearingAdjustment += (180 - bearing);
                             }
                         }
                         else if (result[2] == 0){
                             if ( bearing <= 180 && bearing >= 0) {
-                                finalAdjustment = 90 - bearing;
                                 bearingAdjustment += (90 - bearing);
                             }
                             else if (bearing >= 180 && bearing <= 360){
-                                finalAdjustment = 270 - bearing;
                                 bearingAdjustment += (270 - bearing);
                             }
-                        }else
-                            finalAdjustment = 0;
+                        }
 
                         //System.out.println("Step detected at "+accIndex);
                     }

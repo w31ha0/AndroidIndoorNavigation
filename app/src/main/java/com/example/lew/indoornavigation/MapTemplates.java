@@ -103,8 +103,8 @@ public class MapTemplates{
             setWaps(waps);
             setWIDTH_MAP(1011);
             setHEIGHT_MAP(1010);
-            setBasePositionX(587);
-            setBasePositionY(193);
+            setBasePositionX(193);
+            setBasePositionY(888);
             setIconSizecm(75);
             setPixelTocm(1000/247);
             setDrawable(R.drawable.map5);

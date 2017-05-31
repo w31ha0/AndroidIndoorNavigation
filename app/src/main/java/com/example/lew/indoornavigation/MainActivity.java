@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean haveMagneticData = false;
     private boolean stoppedPitching = true;
     private ArrayList<Float> bases;
-    private float bearingAdjustment;
 
     private ArrayList<Double> list_acc_magnitudes;
     private ArrayList<Double> list_gyros;
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         currentGyro = new float[3];
         currentMagnetic = new float[3];
         currentAcceleration = new float[3];
-        bearingAdjustment = 0;
 
         RegisterListeners();
 
@@ -152,11 +150,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         initialPos[1] = mapView.getBasePositionY();
                         System.out.println("Computing position");
                         double[] currentPos = DataProcessing.computeCurrentPosition(savedHeight,mapView.getAllWalls(),initialPos, list_gyros, list_acc_magnitudes, list_bearings,list_rssi,map.getWaps());
-                        if (Math.abs(bearingAdjustment) < Constants.BEARING_ADJUSTMENT_TOLERANCE) {
-                            bearingAdjustment = (float) currentPos[2];
-                            System.out.println("Bearing adjustment is "+bearingAdjustment+" while bearing is "+bearing);
+
+                        if (currentPos[2] == 1) {
+                            if ( (bearing <= 90 && bearing >= 0) || (bearing <= 360 && bearing >= 270)) {
+                                if (Math.abs(bearing - 0) <= Constants.BEARING_ADJUSTMENT_TOLERANCE)
+                                    bearing = 0;
+                            }
+                            else if (bearing <= 270 && bearing >= 90 ){
+                                if (Math.abs(bearing - 180) <= Constants.BEARING_ADJUSTMENT_TOLERANCE)
+                                    bearing = 180;
+                            }
                         }
-                        System.out.println("Bearing adjustment is "+bearingAdjustment);
+                        else if (currentPos[2] == 0){
+                            if ( bearing <= 180 && bearing >= 0) {
+                                if (Math.abs(bearing - 90) <= Constants.BEARING_ADJUSTMENT_TOLERANCE)
+                                    bearing = 90;
+                            }
+                            else if (bearing >= 180 && bearing <= 360){
+                                if (Math.abs(bearing - 270) <= Constants.BEARING_ADJUSTMENT_TOLERANCE)
+                                    bearing = 270;
+                            }
+                        }
+                        if (bearing%90 == 0)
+                            System.out.println("Bearing corrected to "+bearing);
                         //System.out.println("Determined final position to be at "+currentPos[0]+","+currentPos[1]);
                         mapView.setCurrentPos(currentPos);
                         if (list_acc_magnitudes.size() > Constants.MAX_SIZE_LIST ){
@@ -193,12 +209,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (prevBearing == -1f)
                     prevBearing = yaw;
                 else {
-                    yaw = yaw + bearingAdjustment;
                     float change = yaw - prevBearing;
                     prevBearing = yaw;
                     bearing = (bearing + change);
                     if (bearing < 0)
                         bearing += 360;
+                    else if (bearing > 360)
+                        bearing -= 360;
                 }
                 lastTimeMagnetic = currTime;
                 haveMagneticData = false;
