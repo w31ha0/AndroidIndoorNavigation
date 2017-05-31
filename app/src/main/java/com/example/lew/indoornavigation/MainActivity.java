@@ -188,7 +188,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         lastTimeProcessing = e.timestamp;
                     }
                     break;
+                case Sensor.TYPE_ORIENTATION:
+                    float yaw = e.values[0];
+                    if (prevBearing == -1f)
+                        prevBearing = yaw;
+                    else {
+                        float change = yaw - prevBearing;
+                        prevBearing = yaw;
+                        bearing = (bearing + change);
+                        if (bearing < 0)
+                            bearing += 360;
+                        else if (bearing > 360)
+                            bearing -= 360;
+                    }
                 case Sensor.TYPE_MAGNETIC_FIELD:
+                    /*
                     if (currTime - lastTimeMagnetic > Constants.DATA_SAMPLING_PERIOD) {
                         currentMagnetic = e.values;
                         haveMagneticData = true;

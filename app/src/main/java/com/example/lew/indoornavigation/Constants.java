@@ -15,7 +15,7 @@ public class Constants {
     public static final float FLOOR_PRESSURE_DIFFERENCE = 0.3f;
     public static final int PRESSURE_LIST_SIZE = 40;
     public static final int WAP_MAX_RSSI = -45;
-    public static final double BEARING_ADJUSTMENT_TOLERANCE = 70;
+    public static final double BEARING_ADJUSTMENT_TOLERANCE = 60;
     public static final int ZOOM_SCALE = 2;
 
 }
